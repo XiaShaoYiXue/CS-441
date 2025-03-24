@@ -1,0 +1,566 @@
+---
+title: "CS441 data analysis"
+author: "Molly Han"
+format: html
+editor: visual
+---
+
+```{r}
+library(dplyr)
+library(tidyverse)
+library(ggplot2)
+```
+
+## MOMA
+
+```{r}
+moma <- read.csv("MoMA_merged_final.csv")
+moma
+```
+
+### Gallery representation statistics
+
+```{r}
+moma <- moma %>%
+  mutate(Gender.y = case_when(
+    trimws(Gender.y) %in% c('female (transwoman)', 'transgender woman') ~ 'transgender woman',
+    TRUE ~ trimws(Gender.y)
+  ))
+```
+
+```{r}
+# number of artists by gender
+moma %>%
+  select(Artist, `Gender.y`) %>%
+  distinct() %>%
+  drop_na() %>%
+  count(Gender.y)
+```
+
+```{r}
+# number of artwork by gender
+moma %>%
+  select(Title, `Gender.y`) %>%
+  count(`Gender.y`)
+```
+
+### Classification & Department by gender
+
+```{r}
+# classification & department by gender
+moma %>%
+  group_by(Gender.y, Classification) %>%
+  summarise(count = n()) %>%
+  arrange(Gender.y, desc(count))
+
+ggplot(moma, aes(x = Classification, fill = Gender.y)) +
+  geom_bar(position = "dodge") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(title = "Artwork Classification by Gender",
+       x = "Classification",
+       y = "Count")
+
+moma %>%
+  group_by(Gender.y, Department) %>%
+  summarise(count = n()) %>%
+  arrange(Gender.y, desc(count))
+
+ggplot(moma, aes(x = Department, fill = Gender.y)) +
+  geom_bar(position = "dodge") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(title = "Department Distribution by Gender",
+       x = "Department",
+       y = "Count")
+```
+
+### Size of artwork by gender
+
+```{r}
+# size
+moma %>%
+  group_by(Gender.y) %>%
+  summarise(
+    avg_height = mean(Height..cm., na.rm = TRUE),
+    median_height = median(Height..cm., na.rm = TRUE),
+    avg_width = mean(Width..cm., na.rm = TRUE),
+    median_width = median(Width..cm., na.rm = TRUE),
+    count = n()
+  ) %>%
+  arrange(desc(count))
+
+# Calculate area and analyze
+moma %>%
+  mutate(area_sqcm = Height..cm. * Width..cm.) %>%
+  group_by(Gender.y) %>%
+  summarise(
+    min_area = min(area_sqcm, na.rm = TRUE),
+    max_area = max(area_sqcm, na.rm = TRUE),
+    avg_area = mean(area_sqcm, na.rm = TRUE),
+    median_area = median(area_sqcm, na.rm = TRUE),
+    count = n()
+  ) %>%
+  arrange(desc(count))
+```
+
+```{r}
+# Create boxplot with annotations for upper and lower bounds
+moma %>%
+  mutate(area_sqcm = Height..cm. * Width..cm.) %>%
+  filter(!is.na(Gender.y) & !is.na(area_sqcm) & area_sqcm > 0) %>% # Filter out zeros and negative values for log
+  mutate(log_area = log10(area_sqcm)) %>% # Apply log10 transformation
+  group_by(Gender.y) %>%
+  summarise(
+    min_log = min(log_area, na.rm = TRUE),
+    max_log = max(log_area, na.rm = TRUE),
+    median_log = median(log_area, na.rm = TRUE),
+    Q1_log = quantile(log_area, 0.25, na.rm = TRUE),
+    Q3_log = quantile(log_area, 0.75, na.rm = TRUE),
+    IQR_log = Q3_log - Q1_log,
+    average_log = mean(log_area, na.rm = TRUE),
+    lower_bound_log = max(min_log, Q1_log - 1.5 * IQR_log),
+    upper_bound_log = min(max_log, Q3_log + 1.5 * IQR_log),
+    # Convert log values back to original scale for interpretation
+    min_original = 10^min_log,
+    max_original = 10^max_log,
+    median_original = 10^median_log,
+    Q1_original = 10^Q1_log,
+    Q3_original = 10^Q3_log,
+    average_original = 10^average_log,
+    lower_bound_original = 10^lower_bound_log,
+    upper_bound_original = 10^upper_bound_log,
+    count = n()
+  ) %>%
+  arrange(desc(count))
+```
+
+### Acquired date by gender
+
+```{r}
+# date acquired 
+moma_date <- moma %>%
+  mutate(
+    DateAcquired = as.Date(DateAcquired),
+    decade = floor_date(DateAcquired, unit = "10 years")
+  )
+
+# Count acquisitions by decade and gender
+moma_date %>%
+  group_by(decade, Gender.y) %>%
+  summarise(count = n()) %>%
+  ggplot(aes(x = decade, y = count, fill = Gender.y)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(title = "MoMA Artwork Acquisitions by Decade and Gender",
+       x = "Decade",
+       y = "Number of Artworks",
+       fill = "Gender")
+
+moma_date %>%
+  group_by(decade, Gender.y) %>%
+  summarise(count = n()) %>%
+  group_by(decade) %>%
+  mutate(proportion = count / sum(count)) %>%
+  ggplot(aes(x = decade, y = proportion, fill = Gender.y)) +
+  geom_bar(stat = "identity", position = "fill") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(title = "Proportion of MoMA Acquisitions by Gender Over Time",
+       x = "Decade",
+       y = "Proportion of Artworks",
+       fill = "Gender")
+
+```
+
+### Nationality distribution by gender
+
+```{r}
+# nationality
+moma %>%
+  group_by(Gender.y, Nationality.y) %>%
+  summarise(count = n())
+```
+
+```{r}
+moma %>%
+  group_by(Nationality.y) %>%
+  filter(n() >= 1000) %>%  # Adjust this threshold as needed
+  group_by(Nationality.y, Gender.y) %>%
+  summarise(count = n(), .groups = 'drop') %>%
+  ggplot(aes(x = reorder(Nationality.y, -count), y = count, fill = Gender.y)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(title = "Gender Distribution by Major Nationalities in MoMA Collection",
+       x = "Nationality",
+       y = "Number of Artworks",
+       fill = "Gender")
+```
+
+```{r}
+moma %>%
+  group_by(Nationality.y, Gender.y) %>%
+  summarise(count = n(), .groups = 'drop') %>%
+  group_by(Nationality.y) %>%
+  mutate(
+    total = sum(count),
+    percentage = round(count/sum(count) * 100, 1)
+  ) %>%
+  filter(total >= 1000) %>%  # Adjust threshold as needed
+  arrange(desc(total)) %>%
+  select(Nationality.y, Gender.y, count, percentage, total)
+```
+
+### Artwork's choice of medium by gender
+
+```{r}
+# medium
+moma %>%
+  group_by(Medium, Gender.y) %>%
+  summarise(count = n()) %>%
+  arrange(desc(count))
+
+# Top 10 mediums for male artists, excluding blank values
+moma %>%
+  filter(Gender.y == "male", 
+         !is.na(Medium),    # removes NA values
+         Medium != "",      # removes empty strings
+         !str_trim(Medium) == "") %>%  # removes whitespace-only values
+  group_by(Medium) %>%
+  summarise(count = n()) %>%
+  arrange(desc(count)) %>%
+  slice_head(n = 10) %>%
+  mutate(rank = row_number())
+
+# Top 10 mediums for female artists, excluding blank values
+moma %>%
+  filter(Gender.y == "female",
+         !is.na(Medium),
+         Medium != "",
+         !str_trim(Medium) == "") %>%
+  group_by(Medium) %>%
+  summarise(count = n()) %>%
+  arrange(desc(count)) %>%
+  slice_head(n = 10) %>%
+  mutate(rank = row_number())
+```
+
+```{r}
+# For male artists
+moma %>%
+  filter(Gender.y == "male",
+         !is.na(Medium),
+         Medium != "",
+         !str_trim(Medium) == "") %>%
+  group_by(Medium) %>%
+  summarise(count = n()) %>%
+  top_n(10, count) %>%
+  ggplot(aes(x = reorder(Medium, count), y = count)) +
+  geom_bar(stat = "identity", fill = "skyblue") +
+  coord_flip() +
+  theme_minimal() +
+  labs(title = "Top 10 Mediums Used by Male Artists",
+       x = "Medium",
+       y = "Number of Artworks")
+```
+
+```{r}
+moma %>%
+  filter(Gender.y == "female",
+         !is.na(Medium),
+         Medium != "",
+         !str_trim(Medium) == "") %>%
+  group_by(Medium) %>%
+  summarise(count = n()) %>%
+  top_n(10, count) %>%
+  ggplot(aes(x = reorder(Medium, count), y = count)) +
+  geom_bar(stat = "identity", fill = "coral") +
+  coord_flip() +
+  theme_minimal() +
+  labs(title = "Top 10 Mediums Used by Female Artists",
+       x = "Medium",
+       y = "Number of Artworks")
+```
+
+## Tate
+
+```{r}
+tate <- read.csv("Tate_merged_final.csv")
+```
+
+### Gallery representation statistics
+
+```{r}
+# number of artworks by gender
+tate %>%
+  count(gender)
+```
+
+```{r}
+# number of artists by gender
+tate %>%
+  select(artistRole="artist", gender) %>%
+  distinct() %>%
+  drop_na() %>%
+  count(gender)
+```
+
+### Acquired data by gender
+
+```{r}
+# acquired date
+tate %>%
+  mutate(
+    decade = floor(acquisitionYear/10) * 10
+  ) %>%
+  group_by(decade, gender) %>%
+  summarise(count = n()) %>%
+  ggplot(aes(x = decade, y = count, fill = gender)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(title = "Tate Gallery Artwork Acquisitions by Decade and Gender",
+       x = "Decade",
+       y = "Number of Artworks",
+       fill = "Gender")
+
+# For proportional view
+tate %>%
+  mutate(
+    decade = floor(acquisitionYear/10) * 10
+  ) %>%
+  group_by(decade, gender) %>%
+  summarise(count = n()) %>%
+  group_by(decade) %>%
+  mutate(proportion = count/sum(count)) %>%
+  ggplot(aes(x = decade, y = proportion, fill = gender)) +
+  geom_bar(stat = "identity", position = "fill") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(title = "Proportion of Tate Acquisitions by Gender Over Time",
+       x = "Decade",
+       y = "Proportion of Artworks",
+       fill = "Gender")
+
+```
+
+```{r}
+# Calculate acquisition gap
+tate %>%
+  mutate(acquisitionYear = as.numeric(acquisitionYear),
+    year = as.numeric(year),
+    acquisition_gap = acquisitionYear - year) %>%
+  group_by(gender) %>%
+  summarise(
+    mean_gap = mean(acquisition_gap, na.rm = TRUE),
+    median_gap = median(acquisition_gap, na.rm = TRUE),
+    sd_gap = sd(acquisition_gap, na.rm = TRUE),
+    n = n()
+  ) %>%
+  arrange(desc(n))
+```
+
+```{r}
+# Look at how the gap has changed over time
+ggplot(tate %>% 
+       mutate(
+         acquisitionYear = as.numeric(acquisitionYear),
+         year = as.numeric(year),
+         acquisition_gap = acquisitionYear - year,
+         decade = floor(acquisitionYear/10) * 10
+       ), 
+       aes(x = decade, y = acquisition_gap, color = gender)) +
+  stat_summary(fun = mean, geom = "line") +
+  stat_summary(fun = mean, geom = "point") +
+  theme_minimal() +
+  labs(title = "Average Acquisition Gap Over Time by Gender",
+       x = "Acquisition Decade",
+       y = "Average Acquisition Gap (Years)") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+### Size of artwork by gender
+
+```{r}
+# size
+tate %>%
+  group_by(gender) %>%
+  mutate(
+    height = as.numeric(height), 
+    width = as.numeric(width)
+  ) %>%
+  summarise(
+    avg_height = mean(height, na.rm = TRUE),
+    median_height = median(height, na.rm = TRUE),
+    avg_width = mean(width, na.rm = TRUE),
+    median_width = median(width, na.rm = TRUE),
+    count = n()
+  ) %>%
+  arrange(desc(count))
+
+# Calculate area and analyze
+tate %>%
+  mutate(height = as.numeric(height), 
+    width = as.numeric(width),
+    area_sqmm = height * width) %>%
+  group_by(gender) %>%
+  summarise(
+    avg_area = mean(area_sqmm, na.rm = TRUE),
+    median_area = median(area_sqmm, na.rm = TRUE),
+    count = n()
+  ) %>%
+  arrange(desc(count))
+```
+
+### Nationality distribution by gender
+
+```{r}
+# nationality
+tate_nation <- tate %>%
+  distinct(artist, gender, placeOfBirth) %>%
+  mutate(
+    birthCountry = case_when(
+      str_detect(placeOfBirth, "United States|USA|U.S.A") ~ "United States",
+      str_detect(placeOfBirth, "United Kingdom|UK|U.K.|England|Scotland|Wales") ~ "United Kingdom",
+      # Extract country (usually after the comma)
+      str_detect(placeOfBirth, ",") ~ str_trim(str_extract(placeOfBirth, ",[^,]*$")),
+      TRUE ~ placeOfBirth
+    )
+  ) %>%
+  # Clean up by removing the leading comma and whitespace
+  mutate(birthCountry = str_remove(birthCountry, "^,\\s*"))
+
+# Top 10 countries for male artists
+tate_nation %>%
+  filter(gender == "Male",
+         !is.na(birthCountry),
+         birthCountry != "") %>%
+  group_by(birthCountry) %>%
+  summarise(count = n()) %>%
+  arrange(desc(count)) %>%
+  slice_head(n = 10)
+
+```
+
+```{r}
+# Top 10 countries for female artists
+tate_nation %>%
+  filter(gender == "Female",
+         !is.na(birthCountry),
+         birthCountry != "") %>%
+  group_by(birthCountry) %>%
+  summarise(count = n()) %>%
+  arrange(desc(count)) %>%
+  slice_head(n = 10)
+```
+
+```{r}
+# Visualize both
+# For male artists
+tate_nation %>%
+  filter(gender == "Male",
+         !is.na(birthCountry),
+         birthCountry != "") %>%
+  group_by(birthCountry) %>%
+  summarise(count = n()) %>%
+  top_n(10, count) %>%
+  ggplot(aes(x = reorder(birthCountry, count), y = count)) +
+  geom_bar(stat = "identity", fill = "skyblue") +
+  coord_flip() +
+  theme_minimal() +
+  labs(title = "Top 10 Birth Countries of Male Artists (Tate)",
+       x = "Country",
+       y = "Number of Artists")
+
+# For female artists
+tate_nation %>%
+  filter(gender == "Female",
+         !is.na(birthCountry),
+         birthCountry != "") %>%
+  group_by(birthCountry) %>%
+  summarise(count = n()) %>%
+  top_n(10, count) %>%
+  ggplot(aes(x = reorder(birthCountry, count), y = count)) +
+  geom_bar(stat = "identity", fill = "coral") +
+  coord_flip() +
+  theme_minimal() +
+  labs(title = "Top 10 Birth Countries of Female Artists (Tate)",
+       x = "Country",
+       y = "Number of Artists")
+```
+
+### Artwork's choice of medium by gender
+
+```{r}
+# medium
+tate %>%
+  group_by(medium, gender) %>%
+  summarise(count = n()) %>%
+  arrange(desc(count))
+```
+
+```{r}
+# Top 10 mediums for male artists, excluding blank values
+tate %>%
+  filter(gender == "Male", 
+         !is.na(medium),
+         medium != "",
+         !str_trim(medium) == "") %>%
+  group_by(medium) %>%
+  summarise(count = n()) %>%
+  arrange(desc(count)) %>%
+  slice_head(n = 10) %>%
+  mutate(rank = row_number())
+
+# Top 10 mediums for female artists, excluding blank values
+tate %>%
+  filter(gender == "Female", 
+         !is.na(medium),
+         medium != "",
+         !str_trim(medium) == "") %>%
+  group_by(medium) %>%
+  summarise(count = n()) %>%
+  arrange(desc(count)) %>%
+  slice_head(n = 10) %>%
+  mutate(rank = row_number())
+```
+
+```{r}
+# For male artists
+tate %>%
+  filter(gender == "Male", 
+         !is.na(medium),
+         medium != "",
+         !str_trim(medium) == "") %>%
+  group_by(medium) %>%
+  summarise(count = n()) %>%
+  top_n(10, count) %>%
+  ggplot(aes(x = reorder(medium, count), y = count)) +
+  geom_bar(stat = "identity", fill = "skyblue") +
+  coord_flip() +
+  theme_minimal() +
+  labs(title = "Top 10 Mediums Used by Male Artists (Tate)",
+       x = "Medium",
+       y = "Number of Artworks")
+```
+
+```{r}
+# For female artists
+tate %>%
+  filter(gender == "Female", 
+         !is.na(medium),
+         medium != "",
+         !str_trim(medium) == "") %>%
+  group_by(medium) %>%
+  summarise(count = n()) %>%
+  top_n(10, count) %>%
+  ggplot(aes(x = reorder(medium, count), y = count)) +
+  geom_bar(stat = "identity", fill = "skyblue") +
+  coord_flip() +
+  theme_minimal() +
+  labs(title = "Top 10 Mediums Used by Male Artists (Tate)",
+       x = "Medium",
+       y = "Number of Artworks")
+```

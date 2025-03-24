@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gender Representation by Department - MoMA Data Poetry</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+            background-color: #f9f9f9;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+        
+        .chart-container {
+            overflow-x: auto;
+        }
+        
+        .axis-label {
+            font-weight: bold;
+            text-anchor: middle;
+        }
+        
+        .legend {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 0 15px;
+        }
+        
+        .legend-color {
+            width: 15px;
+            height: 15px;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Gender Representation in MoMA Collection</h1>
+        <p class="subtitle">Exploring the intersection of gender and departmental representation in artwork</p>
+        
+        <div class="chart-container" id="chart"></div>
+        
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #5f4c73;"></div>
+                <span>Male</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #ed944d;"></div>
+                <span>Female</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="department.js"></script>
+</body>
+</html>

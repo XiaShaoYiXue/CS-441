@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Art Data Visualization Gallery</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        .gallery-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            background-image: url('musuem2.jpeg');
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .frame {
+            position: absolute;
+            border: 6px solid #b8860b;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            background-color: white;
+            overflow: hidden;
+            /* Add these to create a better frame appearance */
+            box-sizing: content-box;
+            padding: 0;
+        }
+        
+        #department-frame {
+            left: 31%;
+            top: 33%;
+            width: 9%; /* Reduced from 18% */
+            height: 15%; /* Reduced from 32% */
+        }
+        
+        #artwork-size-frame {
+            right: 28%; /* Adjusted to move slightly left */
+            top: 25%;
+            width: 8%; /* Reduced from 20% */
+            height: 22%; /* Reduced from 25% */
+        }
+        
+        #creation-date-frame {
+            left: 42%;
+            bottom: 18%; 
+            width: 19%;
+            height: 23%;
+        }
+        
+        #medium-frame {
+            left: 30%;
+            top: 5%;
+            width: 7%; /* Reduced from 16% */
+            height: 17%; /* Reduced from 20% */
+        }
+        
+        /* This is the key part for scaling the iframe content */
+        .frame-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        iframe {
+            position: absolute;
+            width: 250%; /* Increased from 200% */
+            height: 250%; /* Increased from 200% */
+            border: none;
+            transform: scale(0.4); /* Reduced from 0.5 to shrink content further */
+            transform-origin: 0 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="gallery-container">
+        <!-- Department Visualization -->
+        <div id="department-frame" class="frame">
+            <div class="frame-container">
+                <iframe src="department.html" title="Department Visualization"></iframe>
+            </div>
+        </div>
+        
+        <!-- Artwork Size Visualization -->
+        <div id="artwork-size-frame" class="frame">
+            <div class="frame-container">
+                <iframe src="artwork_size.html" title="Artwork Size Visualization"></iframe>
+            </div>
+        </div>
+        
+        <!-- Creation Date Visualization -->
+        <div id="creation-date-frame" class="frame">
+            <div class="frame-container">
+                <iframe src="creation_date.html" title="Creation Date Visualization"></iframe>
+            </div>
+        </div>
+        
+        <!-- Medium Visualization -->
+        <div id="medium-frame" class="frame">
+            <div class="frame-container">
+                <iframe src="medium.html" title="Medium Visualization"></iframe>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
