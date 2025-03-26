@@ -374,7 +374,7 @@ function createBoxPlot(data) {
   // Initialize the visualization when the page loads
   document.addEventListener('DOMContentLoaded', function() {
     // Load the real data
-    loadRealData('MoMA_merged_final.csv')
+    loadRealData('../MoMA_merged_final.csv')
       .then(data => {
         createBoxPlot(data);
       })
