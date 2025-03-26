@@ -55,5 +55,5 @@ Each visualization highlights a unique perspective on gender disparities within 
 - All visualizations are modular and can be explored on their own by opening their respective HTML files directly.
 - Some visualizations (such as the `puzzle` and `gap`) include partially implemented interactive elements that will be completed soon — for example, animated bubbles, timelines, and puzzle mechanics that reflect data evolution.
 - The poem component is also planned as an interactive element and has not been embedded yet due to its unique requirements.
-- Feedback from Milestone 3 primarily concerned technical challenges, and some of which have been addressed. Both team members are currently finalizing their thesis work and will finish them withint this week. While the visualizations may look somewhat ugly now, we will complete the remaining interactions and design polish within the coming week.
+- Feedback from Milestone 3 primarily concerned technical challenges, and some of which have been addressed. Both team members are currently finalizing their thesis work and will finish them within this week. While the visualizations may look somewhat ugly now, we will complete the remaining interactions and design polish within the coming week.
 
