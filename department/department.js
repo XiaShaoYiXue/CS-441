@@ -2,7 +2,7 @@
 async function createVisualization() {
     try {
         // Load and parse the CSV data
-        const data = await d3.csv('MoMA_merged_final.csv');
+        const data = await d3.csv('../MoMA_merged_final.csv');
         
         // Group and count by department and gender
         const departmentGenderCounts = {};
