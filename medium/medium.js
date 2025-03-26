@@ -1,39 +1,12 @@
-// Global variables
 let selectedMedium = null;
 let data = null;
 
-// Initialize visualization when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
-    // For development purposes, use simulated data
-    // In production, uncomment the line below to load real data
     loadAndProcessCSVData('../MoMA_merged_final.csv');
-    
-    // Simulate data for development
-    // simulateData();
 });
 
-// Simulate data for development purposes
-function simulateData() {
-    data = {
-        topMediums: [
-            { medium: "Lithograph", total: 4326, male: 3459, female: 867 },
-            { medium: "Gelatin silver print", total: 3891, male: 2918, female: 973 },
-            { medium: "Oil on canvas", total: 3215, male: 2689, female: 526 },
-            { medium: "Etching", total: 2780, male: 2113, female: 667 },
-            { medium: "Woodcut", total: 1952, male: 1425, female: 527 }
-        ]
-    };
-    
-    // Create the visualization with simulated data
-    createVisualization();
-}
-
-// Create texture patterns for each medium
 function createPatterns(svg) {
-    // Define patterns for each medium type
     const defs = svg.append("defs");
-    
-    // Create paint-like textures for each medium
     
     // Lithograph - blue color with texture
     const lithographPattern = defs.append("pattern")
@@ -71,7 +44,6 @@ function createPatterns(svg) {
         .attr("height", 20)
         .attr("fill", "#a9a9a9");
     
-    // Add subtle grain texture for photographic paper
     for (let i = 0; i < 30; i++) {
         const x = Math.random() * 20;
         const y = Math.random() * 20;
@@ -162,23 +134,19 @@ function getPatternId(medium) {
     return "#f0f0f0"; // Default
 }
 
-// Get fill color for gender in pie chart
 function getGenderColor(gender) {
     return gender === "male" ? "#5f4c73" : "#ed944d";
 }
 
-// Handle medium selection
 function handleMediumClick(medium) {
     if (selectedMedium === medium) {
         selectedMedium = null;
-        // Clear pie chart
         d3.select("#pie-chart").selectAll("*").remove();
     } else {
         selectedMedium = medium;
         createPieChart(medium);
     }
     
-    // Update stroke styling based on selection
     d3.selectAll(".medium-bubble")
         .style("stroke-width", function(d) {
             return d.data.medium === selectedMedium ? 3 : 1;
@@ -188,12 +156,9 @@ function handleMediumClick(medium) {
         });
 }
 
-// Create main visualization
 function createVisualization() {
-    // Clear any existing visualization
     d3.select("#visualization").selectAll("*").remove();
     
-    // Create SVG
     const width = 800;
     const height = 500;
     const svg = d3.select("#visualization")
@@ -203,10 +168,8 @@ function createVisualization() {
         .attr("viewBox", `0 0 ${width} ${height}`)
         .attr("style", "max-width: 100%; height: auto;");
     
-    // Create patterns
     createPatterns(svg);
     
-    // Create title
     svg.append("text")
         .attr("x", width / 2)
         .attr("y", 40)
@@ -216,7 +179,6 @@ function createVisualization() {
         .style("font-weight", "bold")
         .text("Art Medium Distribution by Gender");
     
-    // Add subtitle
     svg.append("text")
         .attr("x", width / 2)
         .attr("y", 70)
@@ -226,7 +188,6 @@ function createVisualization() {
         .style("font-style", "italic")
         .text("Size represents number of artworks");
     
-    // Pack layout for the bubbles
     const pack = d3.pack()
         .size([width - 100, height - 140])
         .padding(20);
@@ -236,11 +197,9 @@ function createVisualization() {
     
     const root = pack(hierarchy);
     
-    // Create a group for the bubbles
     const bubblesGroup = svg.append("g")
         .attr("transform", `translate(50, 100)`);
     
-    // Add bubbles for each medium
     const bubbles = bubblesGroup.selectAll("g.medium")
         .data(root.children)
         .enter()
@@ -252,7 +211,6 @@ function createVisualization() {
             handleMediumClick(d.data.medium);
         });
     
-    // Create the main circle for each medium
     bubbles.append("circle")
         .attr("class", "medium-bubble")
         .attr("r", d => d.r)
@@ -272,7 +230,6 @@ function createVisualization() {
             }
         });
     
-    // Add medium labels
     bubbles.append("text")
         .attr("class", "medium-label")
         .attr("text-anchor", "middle")
@@ -283,7 +240,6 @@ function createVisualization() {
         .style("pointer-events", "none")
         .style("text-shadow", "0px 0px 3px white, 0px 0px 3px white");
     
-    // Add count labels
     bubbles.append("text")
         .attr("class", "count-label")
         .attr("text-anchor", "middle")
@@ -293,7 +249,6 @@ function createVisualization() {
         .style("pointer-events", "none")
         .style("text-shadow", "0px 0px 3px white, 0px 0px 3px white");
     
-    // Add instructions
     svg.append("text")
         .attr("x", width / 2)
         .attr("y", height - 20)
@@ -303,26 +258,22 @@ function createVisualization() {
         .text("Click on a medium to see gender distribution");
 }
 
-// Create gender distribution pie chart
 function createPieChart(medium) {
     if (!data) return;
     
-    // Find the selected medium data
     const mediumData = data.topMediums.find(m => m.medium === medium);
     if (!mediumData) return;
     
-    // Prepare pie chart data
     const pieData = [
         { gender: "male", value: mediumData.male },
         { gender: "female", value: mediumData.female }
     ];
     
-    // Clear existing pie chart
     d3.select("#pie-chart").selectAll("*").remove();
     
     // Create SVG for pie chart
     const width = 400;
-    const height = 350; // Increased height to accommodate lower placement
+    const height = 350; 
     const svg = d3.select("#pie-chart")
         .append("svg")
         .attr("width", width)
@@ -330,7 +281,6 @@ function createPieChart(medium) {
         .attr("viewBox", `0 0 ${width} ${height}`)
         .attr("style", "max-width: 100%; height: auto;");
     
-    // Add background
     svg.append("rect")
         .attr("width", width)
         .attr("height", height)
@@ -338,7 +288,6 @@ function createPieChart(medium) {
         .attr("rx", 10)
         .attr("ry", 10);
     
-    // Add title
     svg.append("text")
         .attr("x", width / 2)
         .attr("y", 30)
@@ -347,23 +296,19 @@ function createPieChart(medium) {
         .style("font-weight", "bold")
         .text(`Gender Distribution for ${medium}`);
     
-    // Create group for the pie chart - position it lower
     const pieGroup = svg.append("g")
         .attr("transform", `translate(${width / 2}, ${height / 2 + 10})`);
     
-    // Create the pie layout
     const pie = d3.pie()
         .value(d => d.value)
-        .sort(null); // Don't sort, maintain the order (male, female)
+        .sort(null); 
     
     const pieArcs = pie(pieData);
     
-    // Create the arc generator
     const arc = d3.arc()
         .innerRadius(0)
-        .outerRadius(Math.min(width, height) / 2 - 80); // Reduced radius to avoid overlap
+        .outerRadius(Math.min(width, height) / 2 - 80); 
     
-    // Create the arcs
     pieGroup.selectAll("path")
         .data(pieArcs)
         .enter()
@@ -373,7 +318,6 @@ function createPieChart(medium) {
         .attr("stroke", "white")
         .attr("stroke-width", 2);
     
-    // Add percentage labels
     const arcLabel = d3.arc()
         .innerRadius(Math.min(width, height) / 6)
         .outerRadius(Math.min(width, height) / 6);
@@ -390,11 +334,9 @@ function createPieChart(medium) {
         .style("font-weight", "bold")
         .style("fill", "white");
     
-    // Add gender labels as a separate legend below the pie
     const legendGroup = svg.append("g")
         .attr("transform", `translate(${width/2 - 100}, ${height - 60})`);
     
-    // Male legend item
     legendGroup.append("rect")
         .attr("x", 0)
         .attr("y", 0)
@@ -408,7 +350,6 @@ function createPieChart(medium) {
         .text(`male (${pieData[0].value})`)
         .style("font-size", "14px");
     
-    // Female legend item
     legendGroup.append("rect")
         .attr("x", 130)
         .attr("y", 0)
@@ -422,7 +363,6 @@ function createPieChart(medium) {
         .text(`female (${pieData[1].value})`)
         .style("font-size", "14px");
     
-    // Add total count
     svg.append("text")
         .attr("x", width / 2)
         .attr("y", height - 20)
@@ -431,19 +371,14 @@ function createPieChart(medium) {
         .text(`Total artworks: ${mediumData.total}`);
 }
 
-// Function to parse and process CSV data from the MoMA dataset
 function loadAndProcessCSVData(csvFilePath) {
-    // Use d3.csv to load the file
     d3.csv(csvFilePath).then(function(rawData) {
-        // Process the loaded data
         const mediumCounts = {};
         
-        // Count artworks by medium and gender
         rawData.forEach(function(row) {
             const medium = row.Medium;
-            const gender = row["Gender.y"]; // Adjust based on actual column name
+            const gender = row["Gender.y"]; 
             
-            // Skip rows with missing medium or gender
             if (!medium || !gender || medium === "" || gender === "") return;
             
             if (!mediumCounts[medium]) {
@@ -462,7 +397,6 @@ function loadAndProcessCSVData(csvFilePath) {
             }
         });
         
-        // Convert to array and sort
         const mediumArray = Object.entries(mediumCounts).map(([medium, counts]) => ({
             medium,
             total: counts.total,
@@ -470,18 +404,14 @@ function loadAndProcessCSVData(csvFilePath) {
             female: counts.female
         }));
         
-        // Sort by total count descending
         mediumArray.sort((a, b) => b.total - a.total);
         
-        // Get top 5 mediums
         const top5Mediums = mediumArray.slice(0, 5);
         
-        // Update data and create visualization
         data = { topMediums: top5Mediums };
         createVisualization();
     }).catch(function(error) {
         console.error("Error loading CSV:", error);
-        // If error loading, fall back to simulated data
         simulateData();
     });
 }
