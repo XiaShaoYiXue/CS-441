@@ -60,7 +60,7 @@
  }
 
  #image2{
-  margin-top: 5%;
+  margin-top: 3%;
 }
 
   .frame {
@@ -141,6 +141,7 @@
     flex-wrap: wrap;
     flex-direction: row;
     align-items: center;
+    gap: 30px;
   }
   
   .tile-storage {
@@ -175,7 +176,3 @@
     padding: 10px;
     border-radius: 10px;
   }
-
-  
-  
-  
