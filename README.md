@@ -2,7 +2,7 @@
 
 This project provides a museum-style data storytelling interface to explore gender disparities in the museum collection. Each visualization is framed like an artwork, embedded into a larger interactive gallery experience.
 
-### Group Member: Xiaonan Li, Molly Han
+**Group Member: Xiaonan Li, Molly Han**
 
 ---
 
