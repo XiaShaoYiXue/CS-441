@@ -10,17 +10,17 @@ This project provides a museum-style data storytelling interface to explore gend
 
 ```
 /                 ← Root with museum layout
-├── /artwork_size/                       ← Embedded visualization: Gender disparities in artwork size
-├── /creation_date/                      ← Embedded visualization: Gender disparities in creation dates
-├── /department/                         ← Embedded visualization: Gender differences across departments of artwork
-├── /gap/                                ← Embedded visualization: Time lag in artwork acquisitions by gender
-   └── bubbles_dual_view_10yr_full.json  ← JSON dataset for bubble popularization
-├── /medium/                             ← Embedded visualization: Gender differences in medium used
-├── /puzzle/                             ← Embedded visualization: Average artworks acquired per artist by gender
-   └── png files                         ← Image assets used for assembling the puzzle interface
-├── MoMA_merged_final.csv                ← Dataset used in visualizations
-├── index.html                           ← Main interactive museum page that includes all visualizations
-└── museum2.jpeg                         ← Background image for the museum layout
+├── /artwork_size/                  ← Embedded visualization: Gender disparities in artwork size
+├── /creation_date/                 ← Embedded visualization: Gender disparities in creation dates
+├── /department/                    ← Embedded visualization: Gender differences across departments of artwork
+├── /gap/                           ← Embedded visualization: Time lag in artwork acquisitions by gender
+   └── bubbles_dual_view_10yr_full.json      ← JSON dataset for bubble popularization
+├── /medium/                        ← Embedded visualization: Gender differences in medium used
+├── /puzzle/                        ← Embedded visualization: Average artworks acquired per artist by gender
+   └── png files                             ← Image assets used for assembling the puzzle interface
+├── MoMA_merged_final.csv           ← Dataset used in visualizations
+├── index.html                      ← Main interactive museum page that includes all visualizations
+└── museum2.jpeg                    ← Background image for the museum layout
 ```
 
 ---
