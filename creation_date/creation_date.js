@@ -1,11 +1,8 @@
-// Main D3.js visualization script for gender representation in artwork
 document.addEventListener('DOMContentLoaded', function() {
-    // Configuration
     const margin = { top: 40, right: 80, bottom: 60, left: 80 };
     const width = 1100 - margin.left - margin.right;
     const height = 500 - margin.top - margin.bottom;
     
-    // Create SVG element
     const svg = d3.select('#visualization')
         .append('svg')
         .attr('width', width + margin.left + margin.right)
@@ -13,16 +10,12 @@ document.addEventListener('DOMContentLoaded', function() {
         .append('g')
         .attr('transform', `translate(${margin.left},${margin.top})`);
     
-    // Tooltip
     const tooltip = d3.select('body')
         .append('div')
         .attr('class', 'tooltip')
         .style('opacity', 0);
     
-    // Load the data from CSV
     d3.csv('../MoMA_merged_final.csv').then(function(data) {
-        // Process the data
-        // Extract year from date string
         function extractYear(dateString) {
             if (!dateString) return null;
             // Try to extract a 4-digit year
@@ -30,7 +23,6 @@ document.addEventListener('DOMContentLoaded', function() {
             return yearMatch ? parseInt(yearMatch[0]) : null;
         }
         
-        // Group by year and gender
         const countsByYearAndGender = {};
         
         data.forEach(row => {
@@ -50,7 +42,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         
-        // Convert to array for visualization
         let yearlyData = Object.entries(countsByYearAndGender).map(([year, counts]) => ({
             year: parseInt(year),
             male: counts.male,
@@ -58,50 +49,38 @@ document.addEventListener('DOMContentLoaded', function() {
             total: counts.male + counts.female
         }));
         
-        // Filter years with less than 5 artworks
         yearlyData = yearlyData.filter(d => d.total >= 5);
         
-        // Sort by year
         yearlyData.sort((a, b) => a.year - b.year);
         
-        // Initialize visualization with the processed data
         updateVisualization(yearlyData);
-        
-        // Area toggle removed
-        
-        // Update the visualization
+                
         function updateVisualization(data) {
-            // Clear the previous visualization
             svg.selectAll('*').remove();
             
-            // Define scales
             const xScale = d3.scaleLinear()
                 .domain(d3.extent(data, d => d.year))
                 .range([0, width]);
             
             const maxCount = d3.max(data, d => Math.max(d.male, d.female));
             const yScale = d3.scaleLinear()
-                .domain([0, maxCount * 1.1]) // Add 10% padding
+                .domain([0, maxCount * 1.1]) 
                 .range([height, 0]);
             
-            // Create axes
             const xAxis = d3.axisBottom(xScale)
-                .tickFormat(d3.format('d')); // Format as integer year
+                .tickFormat(d3.format('d')); 
             
             const yAxis = d3.axisLeft(yScale);
             
-            // Add X axis
             svg.append('g')
                 .attr('class', 'axis')
                 .attr('transform', `translate(0,${height})`)
                 .call(xAxis);
             
-            // Add Y axis
             svg.append('g')
                 .attr('class', 'axis')
                 .call(yAxis);
             
-            // Add X axis label
             svg.append('text')
                 .attr('text-anchor', 'middle')
                 .attr('x', width / 2)
@@ -109,7 +88,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 .style('font-size', '14px')
                 .text('Year of Artwork Creation');
             
-            // Add Y axis label
             svg.append('text')
                 .attr('text-anchor', 'middle')
                 .attr('transform', 'rotate(-90)')
@@ -118,7 +96,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 .style('font-size', '14px')
                 .text('Number of Artworks');
             
-            // Define line generators with explicit fill: none
             const maleLine = d3.line()
                 .x(d => xScale(d.year))
                 .y(d => yScale(d.male))
@@ -129,7 +106,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 .y(d => yScale(d.female))
                 .curve(d3.curveMonotoneX);
             
-            // Add the lines with explicit fill: none
             svg.append('path')
                 .datum(data)
                 .attr('class', 'male-line')
@@ -142,7 +118,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 .attr('d', femaleLine)
                 .attr('fill', 'none');
             
-            // Add interactive points
             svg.selectAll('.male-point')
                 .data(data)
                 .enter()
@@ -152,7 +127,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 .attr('cy', d => yScale(d.male))
                 .attr('r', 3)
                 .attr('fill', '#5f4c73')
-                .style('opacity', 0) // Hide by default
+                .style('opacity', 0)
                 .on('mouseover', function(event, d) {
                     d3.select(this).style('opacity', 1);
                     
@@ -209,7 +184,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }).catch(function(error) {
         console.log('Error loading or processing data:', error);
-        // Display error message in the visualization area
         d3.select('#visualization')
             .append('div')
             .style('color', 'red')
