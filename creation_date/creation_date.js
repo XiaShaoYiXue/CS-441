@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .style('opacity', 0);
     
     // Load the data from CSV
-    d3.csv('MoMA_merged_final.csv').then(function(data) {
+    d3.csv('../MoMA_merged_final.csv').then(function(data) {
         // Process the data
         // Extract year from date string
         function extractYear(dateString) {
