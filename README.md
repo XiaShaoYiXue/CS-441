@@ -8,16 +8,15 @@ This project provides a museum-style data storytelling interface to explore gend
 
 ```
 /                 ← Root with museum layout (index.html)
-├── /artwork_size/        ← Contains embedded visualization about gender disparities in artwork size
-└──
-├── /creation_date/        ← Contains embedded visualization about gender disparities in creation date
-├── /department/        ← Contains embedded visualization about gender differences in department of the artwork
-├── /gap/        ← Contains embedded visualization about Gender and the Time Lag in Acquisitions of Artwork
-├── /medium/        ← Contains embedded visualization about gender differences in medium of the artwork
-├── /puzzle/        ← Contains embedded visualization about gender disparities in average artwork per artist acquired by museum 
-├── MoMA_merged_final.csv     ← The dataset we are using for data visualization
-├── index.html     ← The large interactive gallery webpage that incorporated all the previous visualizations
-└── museum2.jpeg    ← The background of the gallery webpage
+├── /artwork_size/            ← Embedded visualization: Gender disparities in artwork size
+├── /creation_date/           ← Embedded visualization: Gender disparities in creation date
+├── /department/              ← Embedded visualization: Gender differences in department of the artwork
+├── /gap/                     ← Embedded visualization: Gender and the Time Lag in Acquisitions of Artwork
+├── /medium/                  ← Embedded visualization: Gender differences in medium of the artwork
+├── /puzzle/                  ← Embedded visualization: Gender disparities in average artwork per artist acquired by museum 
+├── MoMA_merged_final.csv     ← Dataset used in visualizations
+├── index.html                ← Main interactive museum page that includes all visualizations
+└── museum2.jpeg              ← Background image for the museum layout
 ```
 
 ---
@@ -31,17 +30,16 @@ No build tools or servers are required — you can run everything directly from 
 1. **Download or clone the repo:**
 2. **Open `index.html` in your browser:**
    - Go Live for `index.html`
-3. **(optional) Access each visualization**
-   - Click the corresponding folder
-   - Go Live for the corresponding html
+3. **(Optional) Explore visualizations individually**
+   - You can also open any `.html` file inside folders like `/gap/`, `/department/`, etc., to view that chart on its own.
 
    ✅ All internal visualizations and datasets are already linked correctly
 
 ---
 
-## 🌐 GitHub Pages Deployment
+## 🌐 View It Live
 
-If you'd like to view the project online:
+This project is also hosted via GitHub Pages:
 
 Please access: https://xiashaoyixue.github.io/CS-441/
 
