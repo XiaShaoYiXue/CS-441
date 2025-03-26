@@ -6,7 +6,7 @@ let data = null;
 document.addEventListener('DOMContentLoaded', function() {
     // For development purposes, use simulated data
     // In production, uncomment the line below to load real data
-    loadAndProcessCSVData('MoMA_merged_final.csv');
+    loadAndProcessCSVData('../MoMA_merged_final.csv');
     
     // Simulate data for development
     // simulateData();
