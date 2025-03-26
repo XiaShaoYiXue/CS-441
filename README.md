@@ -52,16 +52,7 @@ Each visualization highlights a unique perspective on gender disparities within 
 - Visualizations are displayed as “artworks” using data-driven figures.
 - The current `index.html` interface is functional but does not yet support interactions like zooming or clicking on individual visualizations — these enhancements will be added in the next milestone.
 - All visualizations are modular and can be explored on their own by opening their respective HTML files directly.
-- Some visualizations (such as the puzzle and gap) include partially implemented interactive elements that will be completed soon — for example, animated bubbles, timelines, and puzzle mechanics that reflect data evolution.
+- Some visualizations (such as the `puzzle` and `gap`) include partially implemented interactive elements that will be completed soon — for example, animated bubbles, timelines, and puzzle mechanics that reflect data evolution.
 - The poem component is also planned as an interactive element and has not been embedded yet due to its unique requirements.
 - Feedback from Milestone 3 primarily concerned technical challenges, and some of which have been addressed. Both team members are currently finalizing their thesis work and will finish them withint this week. While the visualizations may look somewhat ugly now, we will complete the remaining interactions and design polish within the coming week.
 
-
----
-
-## 🛠️ Credits
-
-This project uses [D3.js](https://d3js.org) and standard web technologies (HTML/CSS/JS).
-
-
-Feel free to fork, remix, or feature individual visuals in your own data storytelling projects!
