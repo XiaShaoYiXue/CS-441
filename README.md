@@ -9,7 +9,7 @@ This project provides a museum-style data storytelling interface to explore gend
 ## 📁 Project Structure
 
 ```
-/                 ← Root with museum layout (index.html)
+/                 ← Root with museum layout
 ├── /artwork_size/            ← Embedded visualization: Gender disparities in artwork size
 ├── /creation_date/           ← Embedded visualization: Gender disparities in creation dates
 ├── /department/              ← Embedded visualization: Gender differences across departments of artwork
@@ -47,11 +47,15 @@ Please access: https://xiashaoyixue.github.io/CS-441/
 
 ## 🎨 About the Visuals
 
-Each visualization focuses on a different angle of gender disparities in museum artwork acquisitions. They are imported into the main museum-style interface using `<iframe>` for a cohesive walkthrough experience.
+Each visualization highlights a unique perspective on gender disparities within the museum's acquisition history. These visualizations are embedded into the main gallery-style interface (`index.html`) using <`iframe`>, allowing viewers to browse them as if walking through a physical exhibit.
 
-- Artworks are represented with visual figures
-- Bubbles, timelines, and scrollable views show data evolution
-- Files are modular and can also be explored individually
+- Visualizations are displayed as “artworks” using data-driven figures.
+- The current `index.html` interface is functional but does not yet support interactions like zooming or clicking on individual visualizations — these enhancements will be added in the next milestone.
+- All visualizations are modular and can be explored on their own by opening their respective HTML files directly.
+- Some visualizations (such as the puzzle and gap) include partially implemented interactive elements that will be completed soon — for example, animated bubbles, timelines, and puzzle mechanics that reflect data evolution.
+- The poem component is also planned as an interactive element and has not been embedded yet due to its unique requirements.
+- Feedback from Milestone 3 primarily concerned technical challenges, and some of which have been addressed. Both team members are currently finalizing their thesis work and will finish them withint this week. While the visualizations may look somewhat ugly now, we will complete the remaining interactions and design polish within the coming week.
+
 
 ---
 
