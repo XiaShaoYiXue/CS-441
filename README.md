@@ -9,11 +9,11 @@ This project provides a museum-style data storytelling interface to explore gend
 ```
 /                 ← Root with museum layout (index.html)
 ├── /artwork_size/            ← Embedded visualization: Gender disparities in artwork size
-├── /creation_date/           ← Embedded visualization: Gender disparities in creation date
-├── /department/              ← Embedded visualization: Gender differences in department of the artwork
-├── /gap/                     ← Embedded visualization: Gender and the Time Lag in Acquisitions of Artwork
-├── /medium/                  ← Embedded visualization: Gender differences in medium of the artwork
-├── /puzzle/                  ← Embedded visualization: Gender disparities in average artwork per artist acquired by museum 
+├── /creation_date/           ← Embedded visualization: Gender disparities in creation dates
+├── /department/              ← Embedded visualization: Gender differences across departments of artwork
+├── /gap/                     ← Embedded visualization: Time lag in artwork acquisitions by gender
+├── /medium/                  ← Embedded visualization: Gender differences in medium used
+├── /puzzle/                  ← Embedded visualization: Average artworks acquired per artist by gender
 ├── MoMA_merged_final.csv     ← Dataset used in visualizations
 ├── index.html                ← Main interactive museum page that includes all visualizations
 └── museum2.jpeg              ← Background image for the museum layout
