@@ -32,7 +32,7 @@ No build tools or servers are required — you can run everything directly from 
 ### 🧾 Steps:
 
 1. **Download or clone the repo**
-2. **Go Live for `index.html**
+2. **Go Live for `index.html`**
 3. **(Optional) Explore visualizations individually**
    - You can also open any `.html` file inside folders like `/gap/`, `/department/`, etc., to view that chart on its own.
 
