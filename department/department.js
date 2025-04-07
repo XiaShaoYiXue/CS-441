@@ -57,7 +57,7 @@ async function createVisualization() {
         formattedData.sort((a, b) => b.total - a.total);
         const topDepartments = formattedData.slice(0, 10);
         
-        renderBarChart(topDepartments);
+        renderPencilChart(topDepartments);
         
     } catch (error) {
         console.error('Error loading or processing data:', error);
@@ -68,13 +68,18 @@ async function createVisualization() {
     }
 }
 
-// Function to render the grouped bar chart
-function renderBarChart(data) {
+// Function to render the pencil chart
+function renderPencilChart(data) {
     document.getElementById('chart').innerHTML = '';
     
     const margin = { top: 50, right: 30, bottom: 120, left: 80 };
     const width = Math.max(800, data.length * 100) - margin.left - margin.right;
     const height = 500 - margin.top - margin.bottom;
+
+    const chartContainer = d3.select("#chart")
+        .style("display", "flex")
+        .style("justify-content", "center")
+        .style("align-items", "center");
     
     const svg = d3.select("#chart")
         .append("svg")
@@ -105,6 +110,7 @@ function renderBarChart(data) {
         female: "#ed944d"
     };
     
+    // Add axes
     svg.append("g")
         .attr("transform", `translate(0,${height})`)
         .call(d3.axisBottom(x0))
@@ -117,6 +123,7 @@ function renderBarChart(data) {
     svg.append("g")
         .call(d3.axisLeft(y));
     
+    // Add axis labels
     svg.append("text")
         .attr("class", "axis-label")
         .attr("x", width / 2)
@@ -130,54 +137,7 @@ function renderBarChart(data) {
         .attr("y", -margin.left + 20)
         .text("Number of Artworks");
     
-    data.forEach(d => {
-        svg.append("rect")
-            .attr("class", "bar male-bar")
-            .attr("x", x0(d.department) + x1("male"))
-            .attr("y", y(d.male))
-            .attr("width", x1.bandwidth())
-            .attr("height", height - y(d.male))
-            .attr("fill", colors.male)
-            .attr("opacity", 0.9)
-            .on("mouseover", function(event) {
-                d3.select(this).attr("opacity", 1);
-                
-                svg.append("text")
-                    .attr("class", "value-label")
-                    .attr("x", x0(d.department) + x1("male") + x1.bandwidth() / 2)
-                    .attr("y", y(d.male) - 5)
-                    .attr("text-anchor", "middle")
-                    .text(d.male);
-            })
-            .on("mouseout", function() {
-                d3.select(this).attr("opacity", 0.9);
-                svg.selectAll(".value-label").remove();
-            });
-        
-        svg.append("rect")
-            .attr("class", "bar female-bar")
-            .attr("x", x0(d.department) + x1("female"))
-            .attr("y", y(d.female))
-            .attr("width", x1.bandwidth())
-            .attr("height", height - y(d.female))
-            .attr("fill", colors.female)
-            .attr("opacity", 0.9)
-            .on("mouseover", function(event) {
-                d3.select(this).attr("opacity", 1);
-                
-                svg.append("text")
-                    .attr("class", "value-label")
-                    .attr("x", x0(d.department) + x1("female") + x1.bandwidth() / 2)
-                    .attr("y", y(d.female) - 5)
-                    .attr("text-anchor", "middle")
-                    .text(d.female);
-            })
-            .on("mouseout", function() {
-                d3.select(this).attr("opacity", 0.9);
-                svg.selectAll(".value-label").remove();
-            });
-    });
-    
+    // Add chart title
     svg.append("text")
         .attr("x", width / 2)
         .attr("y", -margin.top / 2)
@@ -185,6 +145,168 @@ function renderBarChart(data) {
         .style("font-size", "16px")
         .style("font-weight", "bold")
         .text("Gender Distribution Across Top 10 MoMA Departments");
+    
+    // Create pencil patterns for both genders
+    const defs = svg.append("defs");
+    
+    // Male pencil pattern (graphite/lead color with purple)
+    const malePencil = defs.append("pattern")
+        .attr("id", "malePencil")
+        .attr("patternUnits", "userSpaceOnUse")
+        .attr("width", x1.bandwidth())
+        .attr("height", 20);
+    
+    malePencil.append("rect")
+        .attr("width", x1.bandwidth())
+        .attr("height", 20)
+        .attr("fill", colors.male);
+    
+    // Add some texture to the male pencil
+    malePencil.append("path")
+        .attr("d", `M0,0 L${x1.bandwidth()},0 L${x1.bandwidth()},20 L0,20 Z`)
+        .attr("fill", "url(#maleGradient)");
+    
+    // Female pencil pattern (colored pencil - orange)
+    const femalePencil = defs.append("pattern")
+        .attr("id", "femalePencil")
+        .attr("patternUnits", "userSpaceOnUse")
+        .attr("width", x1.bandwidth())
+        .attr("height", 20);
+    
+    femalePencil.append("rect")
+        .attr("width", x1.bandwidth())
+        .attr("height", 20)
+        .attr("fill", colors.female);
+    
+    // Add some texture to the female pencil
+    femalePencil.append("path")
+        .attr("d", `M0,0 L${x1.bandwidth()},0 L${x1.bandwidth()},20 L0,20 Z`)
+        .attr("fill", "url(#femaleGradient)");
+    
+    // Function to create pencil path
+    function createPaintbrushPath(x, y, width, height) {
+        // Parameters for pencil shape
+        const tipHeight = Math.min(30, height * 0.15); // Pencil tip height
+        const eraserHeight = Math.min(15, height * 0.08); // Pencil eraser height
+        const bodyHeight = height - tipHeight - eraserHeight; // Pencil body height
+        const pencilWidth = width; // Width of the pencil
+        
+        // Calculate points
+        const leftX = x;
+        const rightX = x + pencilWidth;
+        const midX = x + (pencilWidth / 2);
+        
+        // Define path for pencil shape
+        const path = 
+            // Start at the tip of the pencil (top)
+            `M${midX},${y} ` +
+            // Draw the tip (triangle)
+            `L${leftX},${y + tipHeight} ` +
+            `L${rightX},${y + tipHeight} ` +
+            `Z ` +
+            // Draw the body (rectangle)
+            `M${leftX},${y + tipHeight} ` +
+            `L${leftX},${y + tipHeight + bodyHeight} ` +
+            `L${rightX},${y + tipHeight + bodyHeight} ` +
+            `L${rightX},${y + tipHeight} ` +
+            `Z ` +
+            // Draw the eraser (slightly wider rectangle)
+            `M${leftX - 1},${y + tipHeight + bodyHeight} ` +
+            `L${leftX - 1},${y + tipHeight + bodyHeight + eraserHeight} ` +
+            `L${rightX + 1},${y + tipHeight + bodyHeight + eraserHeight} ` +
+            `L${rightX + 1},${y + tipHeight + bodyHeight} ` +
+            `Z`;
+        
+        return {
+            mainPath: path,
+            // Return the coordinates for the line between tip and body
+            tipLine: {
+                x1: leftX,
+                y1: y + tipHeight,
+                x2: rightX,
+                y2: y + tipHeight
+            }
+        };
+    }
+    
+    // Draw pencils for each department and gender
+    data.forEach(d => {
+        // Male pencil
+        const maleX = x0(d.department) + x1("male");
+        const maleHeight = height - y(d.male);
+        const maleY = y(d.male);
+        const maleWidth = x1.bandwidth();
+        
+        const malePencil = createPaintbrushPath(maleX, maleY, maleWidth, maleHeight);
+        
+        svg.append("path")
+            .attr("class", "pencil male-pencil")
+            .attr("d", malePencil.mainPath)
+            .attr("fill", colors.male)
+            .attr("opacity", 0.9)
+            .on("mouseover", function() {
+                d3.select(this).attr("opacity", 1);
+                
+                svg.append("text")
+                    .attr("class", "value-label")
+                    .attr("x", maleX + maleWidth / 2)
+                    .attr("y", maleY - 10)
+                    .attr("text-anchor", "middle")
+                    .text(d.male);
+            })
+            .on("mouseout", function() {
+                d3.select(this).attr("opacity", 0.9);
+                svg.selectAll(".value-label").remove();
+            });
+            
+        // Add the line between pencil tip and body for male pencil
+        svg.append("line")
+            .attr("x1", malePencil.tipLine.x1)
+            .attr("y1", malePencil.tipLine.y1)
+            .attr("x2", malePencil.tipLine.x2)
+            .attr("y2", malePencil.tipLine.y2)
+            .attr("stroke", "#333")
+            .attr("stroke-width", 1)
+            .attr("opacity", 0.7);
+        
+        // Female pencil
+        const femaleX = x0(d.department) + x1("female");
+        const femaleHeight = height - y(d.female);
+        const femaleY = y(d.female);
+        const femaleWidth = x1.bandwidth();
+        
+        const femalePencil = createPaintbrushPath(femaleX, femaleY, femaleWidth, femaleHeight);
+        
+        svg.append("path")
+            .attr("class", "pencil female-pencil")
+            .attr("d", femalePencil.mainPath)
+            .attr("fill", colors.female)
+            .attr("opacity", 0.9)
+            .on("mouseover", function() {
+                d3.select(this).attr("opacity", 1);
+                
+                svg.append("text")
+                    .attr("class", "value-label")
+                    .attr("x", femaleX + femaleWidth / 2)
+                    .attr("y", femaleY - 10)
+                    .attr("text-anchor", "middle")
+                    .text(d.female);
+            })
+            .on("mouseout", function() {
+                d3.select(this).attr("opacity", 0.9);
+                svg.selectAll(".value-label").remove();
+            });
+            
+        // Add the line between pencil tip and body for female pencil
+        svg.append("line")
+            .attr("x1", femalePencil.tipLine.x1)
+            .attr("y1", femalePencil.tipLine.y1)
+            .attr("x2", femalePencil.tipLine.x2)
+            .attr("y2", femalePencil.tipLine.y2)
+            .attr("stroke", "#333")
+            .attr("stroke-width", 1)
+            .attr("opacity", 0.7);
+    });
 }
 
 document.addEventListener('DOMContentLoaded', createVisualization);
