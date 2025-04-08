@@ -1,248 +1,149 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Art Data Visualization Gallery</title>
-    <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            overflow: hidden;
-        }
-        
-        .gallery-container {
-            position: relative;
-            width: 100%;
-            height: 100vh;
-            background-image: url('musuem2.jpeg');
-            background-size: cover;
-            background-position: center;
-        }
-        
-        .frame {
-            position: absolute;
-            border: 6px solid #b8860b;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            background-color: white;
-            overflow: hidden;
-            box-sizing: content-box;
-            padding: 0;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Art Data Visualization Gallery</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
 
-        .frame1 {
-            position: absolute;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            background-color: white;
-            overflow: hidden;
-            box-sizing: content-box;
-            padding: 0;
-        }
-        
-        #medium-frame {
-            right: 25%;
-            bottom: 18%;
-            width: 10%; 
-            height: 20%;
-        }
-        
-        #artwork-size-frame {
-            left: 29%;
-            top: 31%;
-            width: 13%; 
-            height: 20%;
-        }
-        
-        #creation-date-frame {
-            left: 42%;
-            bottom: 18%; 
-            width: 19%;
-            height: 23%;
-        }
-        
-        #department-frame {
-            right: 27%;
-            top: 24%;
-            width: 10%;
-            height: 25%; 
-        }
+    .image-wrapper {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transform: scale(1.21,1.2);
+      transform-origin: center center;
+      
+    }
 
-        #average-artwork-frame {
-            left: 18%;
-            top: 60%;
-            width: 18%;
-            height: 21%;
-        }
+    .gallery-container {
+      position: relative;
+      aspect-ratio: 16 / 9;
+      height: 100%;
+      background-image: url('musuem_view.jpeg');
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
 
-        #gap-frame {
-            left: 46%;
-            top: 28%;
-            width: 11%;
-            height: 20%;
-        }
+    .frame, .frame1 {
+      position: absolute;
+      /* border: 6px solid #b8860b; */
+      background-color: rgba(255, 255, 255, 0.6);
+      /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); */
+      overflow: hidden;
+      box-sizing: content-box;
+      padding: 0;
+    }
 
-        #poem-frame {
-            left: 1.5%;
-            top: 5%;
-            width: 18%;
-            height: 50%;
-        }
-        
-        .frame-container {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-        }
-        
-        iframe {
-            position: absolute;
-            border: none;
-            width: 400%;  
-            height: 400%; 
-            transform: scale(0.25); 
-            transform-origin: 0 0;
-        }
+    .frame-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
 
-        /* Poem styles */
-        .poem-container {
-            width: 100%;
-            height: 100%;
-            padding: 3px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background-color: #d1a19b;
-        }
-        
-        .poem-container h1 {
-            font-size: 1.2em;
-            margin: 5px 0 10px;
-            text-align: center;
-            color: #4d1711;
-        }
+    iframe {
+      position: absolute;
+      border: none;
+      width: 400%;
+      height: 400%;
+      transform: scale(0.25);
+      transform-origin: 0 0;
+    }
 
-        .poem-text {
-            width: 95%;
-            text-align: center;
-            align-items: center;
-            font-size: 0.8em;
-            line-height: 1.4;
-            display: flex;
-            flex-direction: column;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        .poem-text p {
-            margin: 5px 5px;
-            white-space: nowrap;
-            width: 90%;
-            text-align: center;
-        }
-        
-        /* Add space between stanzas */
-        .poem-text p:nth-child(4n) {
-            margin-bottom: 20px;
-        }
-    </style>
+    #department-frame {
+      top: 26.5%;
+      right: 26%;
+      width: 13%;
+      height: 27%;
+    }
+
+    #artwork-size-frame {
+      top: 32.5%;
+      left: 29%;
+      width: 14%;
+      height: 21%;
+    }
+
+    #creation-date-frame {
+      bottom: 18.5%;
+      left: 40.6%;
+      width: 23%;
+      height: 27%;
+    }
+
+    #medium-frame {
+      bottom: 20%;
+      right: 24%;
+      width: 12%;
+      height: 24%;
+    }
+
+    #average-artwork-frame {
+      top: 58%;
+      left: 18%;
+      width: 20%;
+      height: 22%;
+    }
+
+    #gap-frame {
+      top: 29.3%;
+      left: 44.2%;
+      width: 16%;
+      height: 24%;
+    }
+  </style>
 </head>
 <body>
-    <div class="gallery-container">
-        <div id="department-frame" class="frame">
-            <div class="frame-container">
-                <iframe src="department/department.html" title="Department Visualization"></iframe>
-            </div>
-        </div>
-        
-        <div id="artwork-size-frame" class="frame">
-            <div class="frame-container">
-                <iframe src="artwork_size/artwork_size.html" title="Artwork Size Visualization"></iframe>
-            </div>
-        </div>
-        
-        <div id="creation-date-frame" class="frame">
-            <div class="frame-container">
-                <iframe src="creation_date/creation_date.html" title="Creation Date Visualization"></iframe>
-            </div>
-        </div>
-        
-        <div id="medium-frame" class="frame">
-            <div class="frame-container">
-                <iframe src="medium/medium.html" title="Medium Visualization"></iframe>
-            </div>
-        </div>
+  <div class="image-wrapper">
+    <div class="gallery-container">   
 
-        <div id="average-artwork-frame" class="frame1">
-            <div class="frame-container">
-                <iframe src="puzzle/puzzle.html" title="Average ArtWork Visualization"></iframe>
-            </div>
+      <div id="department-frame" class="frame">
+        <div class="frame-container">
+          <iframe src="department/department.html" title="Department Visualization"></iframe>
         </div>
+      </div>
 
-        <div id="gap-frame" class="frame">
-            <div class="frame-container">
-                <iframe src="gap/gap.html" title="Medium Visualization"></iframe>
-            </div>
+      <div id="artwork-size-frame" class="frame">
+        <div class="frame-container">
+          <iframe src="artwork_size/artwork_size.html" title="Artwork Size Visualization"></iframe>
         </div>
+      </div>
 
-        <div id="poem-frame" class="frame">
-            <div class="poem-container">
-                <h1>Brushstrokes of Silence</h1>
-                <div class="poem-text">
-                    <p>We were told to bend like reeds,</p>
-                    <p>To weave love softly, to serve others' needs.</p>
-                    <p>They call us fragile, soft as art,</p>
-                    <p>Yet bar our hands from playing a part.</p>
-                    
-                    <p>I've been shattered and pieced back anew,</p>
-                    <p>Like a puzzle discarded, missing a few.</p>
-                    <p>Men hold the throne, they rule and decide,</p>
-                    <p>Yet in my soul, it's paint that guides.</p>
-                    
-                    <p>I long to draw what my heart perceives,</p>
-                    <p>The feelings, the echoes my soul believes.</p>
-                    <p>Yet roles and burdens steal time away,</p>
-                    <p>My art must wear a man's name to stay.</p>
-                    
-                    <p>A whisper lost in history's air,</p>
-                    <p>A canvas left in disrepair.</p>
-                    <p>How many hands were brushed aside?</p>
-                    <p>How many dreams were cast to hide?</p>
-                    
-                    <p>Their works hang high, their visions bright,</p>
-                    <p>Collected fast, displayed in light.</p>
-                    <p>The halls stretch wide with frames of gold,</p>
-                    <p>Yet women's names are dim and cold.</p>
-                    
-                    <p>Men paint with little, yet still survive,</p>
-                    <p>Their art takes shape, their dreams alive.</p>
-                    <p>A brush, a board, a coin a day,</p>
-                    <p>No wealth required to leave a trace.</p>
-                    
-                    <p>But she, with talent, locked outside,</p>
-                    <p>Watches colors drain and hide.</p>
-                    <p>Painting small, her work stays unseen,</p>
-                    <p>No space reserved where men have been.</p>
-                    
-                    <p>Her strokes are vast, her canvas grand,</p>
-                    <p>She must make space, she must expand.</p>
-                    <p>Not from choice, but from demand—</p>
-                    <p>A fight for space, to take a stand.</p>
-                    
-                    <p>Her hands once bound, her choices slim,</p>
-                    <p>No room to shape the art within.</p>
-                    <p>But voices rise, our colors spread,</p>
-                    <p>We break the chains, paint bold instead.</p>
-                    
-                    <p>The dots of color help me live,</p>
-                    <p>With art, my soul will always give.</p>
-                    <p>Men call me great—among women's best,</p>
-                    <p>But I know I stand with all the rest.</p>
-                </div>
-            </div>
+      <div id="creation-date-frame" class="frame">
+        <div class="frame-container">
+          <iframe src="creation_date/creation_date.html" title="Creation Date Visualization"></iframe>
         </div>
+      </div>
+
+      <div id="medium-frame" class="frame">
+        <div class="frame-container">
+          <iframe src="medium/medium.html" title="Medium Visualization"></iframe>
+        </div>
+      </div>
+
+      <div id="average-artwork-frame" class="frame1">
+        <div class="frame-container">
+          <iframe src="puzzle/puzzle.html" title="Average ArtWork Visualization"></iframe>
+        </div>
+      </div>
+
+      <div id="gap-frame" class="frame">
+        <div class="frame-container">
+          <iframe src="gap/gap.html" title="Medium Visualization"></iframe>
+        </div>
+      </div>
     </div>
+  </div>
 </body>
 </html>
