@@ -6,27 +6,51 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Framed Image</title>
   <link rel="stylesheet" href="puzzle.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet">
 </head>
 
 <body>
   <div class="portrait-blocks">
     <div class="top-content">
-      <div class="image-container" id="image">
-        <div class="tile-board" id="VanGogh"></div>
-        <img class="frame" src="frame.png" alt="Frame" />
+      <div class="third-column">
+        <div class="image-container" id="image">
+          <!-- <div class="tile-board" id="VanGogh"></div>
+          <img class="frame" src="frame.png" alt="Frame" /> -->
+          <img class="VanGogh" src="VanGogh_frame.png" alt="Frame" />
+        </div>
       </div>
-
-      <div class="image-container" id="image2">
-        <div class="tile-board" id="Frida"></div>
-        <img class="frame" id="frame2" src="frame2.png" alt="Frame" />
+    
+      <div class="third-column">
+        <div class="image-container" id="image2">
+          <div class="tile-board" id="Frida"></div>
+          <img class="frame" id="frame2" src="frame2.png" alt="Frame" />
+        </div>
+      </div>
+    
+      <div class="third-column">
+        <div class="tile-storage" id="tile-pool">
+          <div id="poem-reveal" class="poem-hidden">
+            <div id="poem">
+              <h1>Brushstroke of Silence</h1>
+              <h3>By Xiaonan Li and Molly Han</h3>
+              <br>
+              We were told to bend like reeds, <br>
+              To weave love softly, to serve others' needs.<br>
+              They call us fragile, soft as art,<br>
+              Yet bar our hands from playing a part.<br>
+              <br>
+              I've been shattered and pieced back anew,<br>
+              Like a puzzle discarded, missing a few.<br>
+              Men hold the throne, they rule and decide,<br>
+              Yet in my soul, it's paint that guides. 
+            </div>
+            <br>
+            <br>
+            <div id="fact">On average, museums collect <em>12</em> artworks per male artist compared to <em>8</em> per female artist.</div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="middle-content">
-      <div class="museum-label" id="VGLabel">Poem <br> XXXXXXX <br> XXXXXXX <br> XXXXXXX</div>
-      <div class="museum-label" id="FridaLabel">Poem <br> XXXXXXX <br> XXXXXXX <br> XXXXXXX</div>
-    </div>
-
-    <div class="tile-storage" id="tile-pool"></div>
   </div>
 
   <script src="puzzle.js"></script>
