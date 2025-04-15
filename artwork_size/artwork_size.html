@@ -4,9 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gender vs. Artwork Size - Box Plot</title>
-  <!-- D3.js library -->
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400&display=swap" rel="stylesheet">
+
   <script src="https://d3js.org/d3.v7.min.js"></script>
-  <!-- Custom CSS -->
+
   <style>
     body {
       font-family: 'Helvetica Neue', Arial, sans-serif;
@@ -16,7 +18,7 @@
       color: #333;
     }
     .container {
-      max-width: 900px;
+      max-width: 1200px;
       margin: 0 auto;
       background-color: white;
       padding: 30px;
@@ -36,9 +38,80 @@
       color: #666;
       font-size: 1.1em;
     }
+    
+    .content-wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    
+    .chart-wrapper {
+      width: 65%;
+    }
+    
     .chart {
       margin-top: 40px;
     }
+    
+    .poem-container {
+      width: 30%;
+      margin: 40px 0 0 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      animation: fadeIn 1s ease-in-out forwards;
+      border-left: 2px solid rgba(95, 76, 115, 0.3);
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translate(-2%, 10px); }
+      to { opacity: 1; transform: translate(-2%, 0); }
+    }
+    
+    .poem-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      font-weight: 600;
+      margin-bottom: 5px;
+      color: #333;
+      text-align: center;
+    }
+    
+    .poem-author {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 400;
+      margin-bottom: 20px;
+      color: #555;
+      text-align: center;
+    }
+    
+    .poem-content {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      text-align: center;
+      color: #333;
+    }
+    
+    .fact-content {
+      margin-top: 30px;
+      font-family: 'Lato', sans-serif;
+      font-size: 0.95rem;
+      text-align: center;
+      color: #333;
+      text-shadow: 0 0 8px rgba(255, 204, 0, 0.3), 0 0 12px rgba(255, 204, 0, 0.2);
+    }
+    
+    .fact-content em {
+      font-style: italic;
+      font-weight: bold;
+      color: #ffcc00;
+    }
+    
     .note {
       font-size: 0.9em;
       text-align: center;
@@ -62,11 +135,24 @@
       padding-left: 20px;
       font-size: 13px;
     }
-    /* Style for the grid lines */
     .grid line {
       stroke: lightgrey;
       stroke-opacity: 0.7;
       shape-rendering: crispEdges;
+    }
+    
+    @media (max-width: 900px) {
+      .content-wrapper {
+        flex-direction: column;
+      }
+      .chart-wrapper, .poem-container {
+        width: 100%;
+      }
+      .poem-container {
+        border-left: none;
+        border-top: 2px solid rgba(95, 76, 115, 0.3);
+        margin-top: 30px;
+      }
     }
   </style>
 </head>
@@ -75,11 +161,41 @@
     <h1>Gender Representation in Artwork Dimensions</h1>
     <h2>MoMA Collection Analysis</h2>
     
-    <div id="boxplot-chart" class="chart"></div>
-    <p class="note">Data visualization for gender representation in the MoMA collection.</p>
+    <div class="content-wrapper">
+      <div class="chart-wrapper">
+        <div id="boxplot-chart" class="chart"></div>
+        <p class="note">Data visualization for gender representation in the MoMA collection.</p>
+      </div>
+      
+      <!-- Poem section on the right side -->
+      <div class="poem-container">
+        <h1 class="poem-title">Brushstroke of Silence</h1>
+        <h3 class="poem-author">By Xiaonan Li and Molly Han</h3>
+        
+        <div class="poem-content">
+          Men paint with little, yet still survive,<br>
+          Their art takes shape, their dreams alive.<br>
+          A brush, a board, a coin a day,<br>
+          No wealth required to leave a trace.<br>
+          <br>
+          But she, with talent, locked outside,<br>
+          Watches colors drain and hide.<br>
+          Painting small, her work stays unseen,<br>
+          No space reserved where men have been.<br>
+          <br>
+          Her strokes are vast, her canvas grand,<br>
+          She must make space, she must expand.<br>
+          Not from choice, but from demand—<br>
+          A fight for space, to take a stand.
+        </div>
+        
+        <div class="fact-content">
+          Despite creating only <em>16%</em> of artworks in the collection, women must paint <em>2.6 times larger</em> than men to earn their place on museum walls.
+        </div>
+      </div>
+    </div>
   </div>
 
-  <!-- Custom JavaScript -->
   <script src="artwork_size.js"></script>
 </body>
 </html>
