@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Art Data Visualization Gallery</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400&display=swap" rel="stylesheet">
   <style>
     html, body {
       margin: 0;
@@ -11,6 +13,7 @@
       width: 100vw;
       height: 100vh;
       overflow: hidden;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
     }
 
     .image-wrapper {
@@ -22,27 +25,31 @@
       align-items: center;
       transform: scale(1.21,1.2);
       transform-origin: center center;
-      
     }
 
     .gallery-container {
       position: relative;
-      aspect-ratio: 16 / 9;
-      height: 100%;
-      background-image: url('musuem_view.jpeg');
-      background-size: contain;
+      width: 100%;
+      height: 100vh;
+      background-image: url('musuem2.jpeg');
+      background-size: cover;
       background-position: center;
-      background-repeat: no-repeat;
     }
 
     .frame, .frame1 {
       position: absolute;
-      /* border: 6px solid #b8860b; */
       background-color: rgba(255, 255, 255, 0.6);
-      /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); */
       overflow: hidden;
       box-sizing: content-box;
       padding: 0;
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s, opacity 0.5s;
+    }
+    
+    .frame:hover, .frame1:hover {
+      transform: scale(1.02);
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+      z-index: 10;
     }
 
     .frame-container {
@@ -52,19 +59,16 @@
       overflow: hidden;
     }
 
-    iframe {
-      position: absolute;
-      border: none;
-      width: 400%;
-      height: 400%;
-      transform: scale(0.25);
-      transform-origin: 0 0;
+    .viz-screenshot {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
     }
 
     #department-frame {
-      top: 26.5%;
-      right: 26%;
-      width: 13%;
+      top: 25%;
+      right: 27.25%;
+      width: 10.5%;
       height: 27%;
     }
 
@@ -72,7 +76,7 @@
       top: 32.5%;
       left: 29%;
       width: 14%;
-      height: 21%;
+      height: 20%;
     }
 
     #creation-date-frame {
@@ -83,9 +87,9 @@
     }
 
     #medium-frame {
-      bottom: 20%;
-      right: 24%;
-      width: 12%;
+      bottom: 19%;
+      right: 25%;
+      width: 10%;
       height: 24%;
     }
 
@@ -102,48 +106,652 @@
       width: 16%;
       height: 24%;
     }
+    
+    /* Modal styles for full visualization */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.8);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    
+    .modal-content {
+      position: relative;
+      width: 85%;
+      height: 85%;
+      max-width: 1200px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+      overflow: hidden;
+      padding: 0;
+    }
+    
+    .modal-iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      transform: scale(1.0);
+      transform-origin: 0 0;
+      pointer-events: auto; /* Explicitly enable pointer events for modal iframe */
+    }
+    
+    .close-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 40px;
+      height: 40px;
+      background-color: rgba(0, 0, 0, 0.7);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      font-size: 20px;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1001;
+      transition: background-color 0.2s;
+    }
+    
+    .close-button:hover {
+      background-color: rgba(0, 0, 0, 0.9);
+    }
+    
+    .visualization-title {
+      position: absolute;
+      top: 15px;
+      left: 20px;
+      color: white;
+      font-size: 20px;
+      font-weight: bold;
+      z-index: 1001;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Spotlight navigation styles */
+    #spotlight-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.7);
+      pointer-events: none;
+      transition: all 0.5s ease;
+      z-index: 5;
+    }
+    
+    .frame.active, .frame1.active {
+      z-index: 15;
+      box-shadow: 0 0 30px rgba(255, 255, 255, 0.9) !important;
+      transform: scale(1.05) !important;
+      opacity: 1 !important;
+    }
+    
+    .frame.inactive, .frame1.inactive {
+      pointer-events: none;
+      opacity: 0.4;
+      cursor: default;
+    }
+    
+    #complete-poem {
+      position: absolute;
+      top: 50%;
+      left: 10%;
+      transform: translateY(-50%);
+      width: 350px;
+      background-color: rgba(255, 255, 255, 0.95);
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+      z-index: 20;
+      max-height: 80%;
+      overflow-y: auto;
+      display: none;
+      animation: fadeIn 1s ease-out;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translate(-20px, -50%); }
+      to { opacity: 1; transform: translateY(-50%); }
+    }
+    
+    .poem-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      margin-bottom: 5px;
+      text-align: center;
+    }
+    
+    .poem-author {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      margin-bottom: 20px;
+      text-align: center;
+      color: #555;
+    }
+    
+    .poem-content {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+    
+    .stanza {
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    
+    .stanza:last-child {
+      border-bottom: none;
+    }
+    
+    .stanza[data-visualization]::before {
+      content: attr(data-visualization);
+      display: block;
+      font-family: 'Lato', sans-serif;
+      font-size: 0.8rem;
+      color: #666;
+      font-style: italic;
+      margin-bottom: 5px;
+    }
+    
+    .fact-content {
+      margin-top: 20px;
+      font-family: 'Lato', sans-serif;
+      font-size: 0.9rem;
+      text-align: center;
+      text-shadow: 0 0 8px rgba(255, 204, 0, 0.3);
+    }
+    
+    .fact-content em {
+      font-weight: bold;
+      color: #555;
+    }
+    
+    .progress-indicator {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+      z-index: 20;
+    }
+    
+    .progress-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.5);
+      transition: all 0.3s ease;
+    }
+    
+    .progress-dot.active {
+      background-color: white;
+      transform: scale(1.2);
+    }
+    
+    .progress-dot.completed {
+      background-color: white;
+    }
+    
+    .spotlight-instruction {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: white;
+      font-family: 'Lato', sans-serif;
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 10px 20px;
+      border-radius: 20px;
+      z-index: 20;
+      white-space: nowrap;
+    }
+    
+    /* Progressive poem reveal during navigation */
+    .stanza-preview {
+      position: absolute;
+      left: 10%;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 300px;
+      background-color: rgba(255, 255, 255, 0.95);
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+      font-family: 'Cormorant Garamond', serif;
+      z-index: 20;
+      pointer-events: none;
+      animation: stanzaFadeIn 1s ease-out;
+      display: none;
+    }
+    
+    @keyframes stanzaFadeIn {
+      from { opacity: 0; transform: translate(-20px, -50%); }
+      to { opacity: 1; transform: translateY(-50%); }
+    }
+    
+    .stanza-preview.visible {
+      display: block;
+    }
+
+    .next-button {
+      position: absolute;
+      bottom: 30px;
+      right: 15px;
+      background-color: rgba(0, 0, 0, 0.7);
+      color: white;
+      border: none;
+      border-radius: 20px;
+      padding: 8px 15px;
+      font-family: 'Lato', sans-serif;
+      font-size: 14px;
+      cursor: pointer;
+      z-index: 1001;
+      display: none;
+      transform: translateY(50px);
+      animation: slideUp 0.5s forwards;
+      animation-delay: 0.5s;
+    }
+
+    @keyframes slideUp {
+      to { transform: translateY(0); }
+    }
+
+    .next-button:hover {
+      background-color: rgba(0, 0, 0, 0.9);
+    }
+
+    /* Add this to ensure the whole iframe can be clicked */
+    .modal-iframe-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Close button for the poem */
+    .poem-close-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 25px;
+      height: 25px;
+      background-color: rgba(0, 0, 0, 0.7);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: background-color 0.2s;
+    }
+    
+    .poem-close-button:hover {
+      background-color: rgba(0, 0, 0, 0.9);
+    }
   </style>
 </head>
 <body>
   <div class="image-wrapper">
     <div class="gallery-container">   
 
-      <div id="department-frame" class="frame">
+      <div id="department-frame" class="frame" data-title="Gender Representation by Department" data-src="department/department.html">
         <div class="frame-container">
-          <iframe src="department/department.html" title="Department Visualization"></iframe>
+          <img class="viz-screenshot" src="department/department.png" alt="Department Visualization">
         </div>
       </div>
 
-      <div id="artwork-size-frame" class="frame">
+      <div id="artwork-size-frame" class="frame" data-title="Gender Representation in Artwork Dimensions" data-src="artwork_size/artwork_size.html">
         <div class="frame-container">
-          <iframe src="artwork_size/artwork_size.html" title="Artwork Size Visualization"></iframe>
+          <img class="viz-screenshot" src="artwork_size/artwork_size.png" alt="Artwork Size Visualization">
         </div>
       </div>
 
-      <div id="creation-date-frame" class="frame">
+      <div id="creation-date-frame" class="frame" data-title="Gender Representation in Artwork Creation" data-src="creation_date/creation_date.html">
         <div class="frame-container">
-          <iframe src="creation_date/creation_date.html" title="Creation Date Visualization"></iframe>
+          <img class="viz-screenshot" src="creation_date/creation_date.png" alt="Creation Date Visualization">
         </div>
       </div>
 
-      <div id="medium-frame" class="frame">
+      <div id="medium-frame" class="frame" data-title="Gender Representation in Art Mediums" data-src="medium/medium.html">
         <div class="frame-container">
-          <iframe src="medium/medium.html" title="Medium Visualization"></iframe>
+          <img class="viz-screenshot" src="medium/medium.png" alt="Medium Visualization">
         </div>
       </div>
 
-      <div id="average-artwork-frame" class="frame1">
+      <div id="average-artwork-frame" class="frame1" data-title="Average Artwork Analysis" data-src="puzzle/puzzle.html">
         <div class="frame-container">
-          <iframe src="puzzle/puzzle.html" title="Average ArtWork Visualization"></iframe>
+          <img class="viz-screenshot" src="puzzle/puzzle.png" alt="Average Artwork Visualization">
         </div>
       </div>
 
-      <div id="gap-frame" class="frame">
+      <div id="gap-frame" class="frame" data-title="Gender Gap Analysis" data-src="gap/gap.html">
         <div class="frame-container">
-          <iframe src="gap/gap.html" title="Medium Visualization"></iframe>
+          <img class="viz-screenshot" src="gap/gap.png" alt="Gender Gap Visualization">
         </div>
       </div>
     </div>
   </div>
+  
+  <div class="modal-overlay" id="visualization-modal">
+    <div class="visualization-title" id="modal-title"></div>
+    <button class="close-button" id="close-modal">×</button>
+    <button class="next-button" id="next-button">Continue to Next Visualization →</button>
+    <div class="modal-content">
+      <div class="modal-iframe-container">
+        <iframe class="modal-iframe" id="modal-iframe" src=""></iframe>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Define the order of frames to visit
+      const visitOrder = [
+        'average-artwork-frame',    // Gender vs Artwork number per artist (puzzle)
+        'creation-date-frame',      // Creation date
+        'gap-frame',                // Acquired data gap
+        'department-frame',         // Artwork department
+        'medium-frame',             // Artwork medium
+        'artwork-size-frame'        // Artwork size
+      ];
+      
+      // Track which frames have been visited
+      let visitedFrames = {};
+      let currentSpotlightIndex = 0;
+      let currentlyViewingIndex = -1;
+      
+      // Gather existing UI elements
+      const frames = document.querySelectorAll('.frame, .frame1');
+      const modal = document.getElementById('visualization-modal');
+      const modalIframe = document.getElementById('modal-iframe');
+      const modalTitle = document.getElementById('modal-title');
+      const closeButton = document.getElementById('close-modal');
+      const nextButton = document.getElementById('next-button');
+      
+      // Create a div for the full poem that will be revealed at the end
+      const poemContainer = document.createElement('div');
+      poemContainer.id = 'complete-poem';
+      poemContainer.innerHTML = `
+        <button class="poem-close-button" id="poem-close">×</button>
+        <div class="poem-wrapper">
+          <h1 class="poem-title">Brushstroke of Silence</h1>
+          <h3 class="poem-author">By Xiaonan Li and Molly Han</h3>
+          
+          <div class="poem-content">
+            <div class="stanza" data-visualization="Gender vs Artwork number per artist (puzzle)">
+              <p>We were told to bend like reeds,<br>
+              To weave love softly, to serve others' needs.<br>
+              They call us fragile, soft as art,<br>
+              Yet bar our hands from playing a part.</p>
+              
+              <p>I've been shattered and pieced back anew,<br>
+              Like a puzzle discarded, missing a few.<br>
+              Men hold the throne, they rule and decide,<br>
+              Yet in my soul, it's paint that guides.</p>
+            </div>
+            
+            <div class="stanza" data-visualization="Creation Date">
+              <p>I long to draw what my heart perceives,<br>
+              The feelings, the echoes my soul believes.<br>
+              Yet roles and burdens steal time away,<br>
+              My art must wear a man's name to stay.</p>
+              
+              <p>A whisper lost through centuries' span,<br>
+              Where men's works tower, women's barely ran.<br>
+              From 1800 to modern day,<br>
+              Their lines soar high, ours drift astray.</p>
+            </div>
+            
+            <div class="stanza" data-visualization="Acquired Data Gap">
+              <p>Men's treasures wait through decades long,<br>
+              Their worth discovered after dusk has gone.<br>
+              Yet women's works—more swiftly gained,<br>
+              Not from value, but from time restrained.</p>
+            </div>
+            
+            <div class="stanza" data-visualization="Artwork Department">
+              <p>In every wing where art resides,<br>
+              Male names dominate on all sides.<br>
+              Each department wall with frames of gold,<br>
+              Yet women's names stay dim and cold.</p>
+            </div>
+            
+            <div class="stanza" data-visualization="Artwork Medium">
+              <p>Through silver prints and lithographs they reign,<br>
+              On penciled paper, their visions remain.<br>
+              Five sacred mediums men claim as throne,<br>
+              While women's hands work shadows, oft unknown.</p>
+            </div>
+            
+            <div class="stanza" data-visualization="Artwork Size">
+              <p>Men paint with little, yet still survive,<br>
+              Their art takes shape, their dreams alive.<br>
+              A brush, a board, a coin a day,<br>
+              No wealth required to leave a trace.</p>
+              
+              <p>But she, with talent, locked outside,<br>
+              Watches colors drain and hide.<br>
+              Painting small, her work stays unseen,<br>
+              No space reserved where men have been.</p>
+              
+              <p>Her strokes are vast, her canvas grand,<br>
+              She must make space, she must expand.<br>
+              Not from choice, but from demand—<br>
+              A fight for space, to take a stand.</p>
+            </div>
+            
+            <div class="stanza" data-visualization="Elevation">
+              <p>Her hands once bound, her choices slim,<br>
+              No room to shape the art within.<br>
+              But voices rise, our colors spread,<br>
+              We break the chains, paint bold instead.</p>
+              
+              <p>The dots of color help me live,<br>
+              With art, my soul will always give.<br>
+              Men call me great—among women's best,<br>
+              But I know I stand with all the rest.</p>
+            </div>
+          </div>
+          
+          <div class="fact-content">
+            <p>Despite being only <em>21%</em> of artists in museum collections, women create work that speaks volumes. The brushstrokes of silence are finally being heard.</p>
+          </div>
+        </div>
+      `;
+      poemContainer.style.display = 'none';
+      document.querySelector('.gallery-container').appendChild(poemContainer);
+      
+      const overlay = document.createElement('div');
+      overlay.id = 'spotlight-overlay';
+      document.querySelector('.gallery-container').appendChild(overlay);
+      
+      const progressIndicator = document.createElement('div');
+      progressIndicator.className = 'progress-indicator';
+      for (let i = 0; i < visitOrder.length; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'progress-dot';
+        if (i === 0) dot.classList.add('active');
+        progressIndicator.appendChild(dot);
+      }
+      document.querySelector('.gallery-container').appendChild(progressIndicator);
+      
+      // Add instruction text
+      const instruction = document.createElement('div');
+      instruction.className = 'spotlight-instruction';
+      instruction.textContent = 'Click on the highlighted frame to explore (1/6)';
+      document.querySelector('.gallery-container').appendChild(instruction);
+      
+      // Create stanza preview container
+      const stanzaPreview = document.createElement('div');
+      stanzaPreview.className = 'stanza-preview';
+      document.querySelector('.gallery-container').appendChild(stanzaPreview);
+      
+      // Map visualization frames to poem stanzas
+      const visualizationTitles = [
+        "Gender vs Artwork number per artist (puzzle)",
+        "Creation Date",
+        "Acquired Data Gap",
+        "Artwork Department",
+        "Artwork Medium",
+        "Artwork Size",
+        "Elevation"
+      ];
+      
+      // Function to update spotlight
+      function updateSpotlight() {
+        // Reset all frames
+        document.querySelectorAll('.frame, .frame1').forEach(frame => {
+          frame.classList.remove('active', 'inactive');
+          frame.classList.add('inactive');
+        });
+        
+        if (currentSpotlightIndex < visitOrder.length) {
+          // Highlight current frame
+          const currentFrame = document.getElementById(visitOrder[currentSpotlightIndex]);
+          currentFrame.classList.remove('inactive');
+          currentFrame.classList.add('active');
+          
+          // Update instruction
+          instruction.textContent = `Click on the highlighted frame to explore (${currentSpotlightIndex + 1}/${visitOrder.length})`;
+          
+          // Update progress indicator
+          document.querySelectorAll('.progress-dot').forEach((dot, index) => {
+            dot.classList.remove('active');
+            if (index === currentSpotlightIndex) {
+              dot.classList.add('active');
+            }
+            if (index < currentSpotlightIndex) {
+              dot.classList.add('completed');
+            }
+          });
+          
+          // Update stanza preview if there are previous visits
+          if (currentSpotlightIndex > 0) {
+            // Get the title of the previous visualization
+            const prevVisualizationTitle = visualizationTitles[currentSpotlightIndex - 1];
+            
+            // Get the stanza element with matching visualization attribute
+            const stanzaElement = document.querySelector(`.stanza[data-visualization="${prevVisualizationTitle}"]`);
+            
+            if (stanzaElement) {
+              // Create preview with the last visited stanza
+              stanzaPreview.innerHTML = `
+                <div class="preview-title" style="font-style: italic; font-size: 0.9rem; margin-bottom: 10px; color: #666;">
+                  From the last section:
+                </div>
+                ${stanzaElement.innerHTML}
+              `;
+              stanzaPreview.classList.add('visible');
+              
+              // Hide preview after a delay
+              setTimeout(() => {
+                stanzaPreview.classList.remove('visible');
+              }, 10000);
+            }
+          }
+        } else {
+          // All frames visited - show full poem and remove overlay
+          overlay.style.backgroundColor = 'rgba(0, 0, 0, 0)';
+          document.querySelectorAll('.frame, .frame1').forEach(frame => {
+            frame.classList.remove('inactive');
+          });
+          poemContainer.style.display = 'block';
+          stanzaPreview.classList.remove('visible');
+          instruction.textContent = 'Poem complete! Explore freely';
+          
+          // All dots completed
+          document.querySelectorAll('.progress-dot').forEach(dot => {
+            dot.classList.add('completed');
+            dot.classList.remove('active');
+          });
+        }
+      }
+      
+      // Modified click handlers for frames that work with the existing modal system
+      frames.forEach(frame => {
+        // Store original click listener
+        const originalClick = frame.onclick;
+        
+        // Replace with a new click handler that respects spotlight navigation
+        frame.addEventListener('click', function(e) {
+          const frameId = this.id;
+          
+          // Only allow clicking the active frame during guided navigation
+          if (currentSpotlightIndex < visitOrder.length && !this.classList.contains('active')) {
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+          }
+          
+          // Mark frame as currently being viewed
+          currentlyViewingIndex = visitOrder.indexOf(frameId);
+          
+          // Show the next button if there's another visualization to view
+          if (currentlyViewingIndex >= 0 && currentlyViewingIndex < visitOrder.length - 1) {
+            nextButton.style.display = 'block';
+          } else {
+            nextButton.style.display = 'none';
+          }
+          
+          // Mark this frame as visited
+          visitedFrames[frameId] = true;
+          
+          // Let the existing modal open logic continue
+          const src = this.getAttribute('data-src');
+          const title = this.getAttribute('data-title');
+          
+          modalIframe.src = src;
+          modalTitle.textContent = title;
+          
+          modal.style.display = 'flex';
+          document.body.style.overflow = 'hidden'; 
+        });
+      });
+      
+      closeButton.addEventListener('click', function() {
+        modal.style.display = 'none';
+        document.body.style.overflow = ''; 
+        nextButton.style.display = 'none';
+        
+        if (currentSpotlightIndex <= currentlyViewingIndex) {
+          currentSpotlightIndex = currentlyViewingIndex + 1;
+          updateSpotlight();
+        }
+      });
+      
+      nextButton.addEventListener('click', function() {
+        modal.style.display = 'none';
+        document.body.style.overflow = ''; 
+        nextButton.style.display = 'none';
+        
+        currentSpotlightIndex = currentlyViewingIndex + 1;
+        updateSpotlight();
+      });
+      
+      document.getElementById('poem-close').addEventListener('click', function() {
+        poemContainer.style.display = 'none';
+      });
+      
+      updateSpotlight();
+      
+      document.querySelectorAll('.frame1').forEach(el => {
+        el.classList.add('frame');
+      });
+    });
+  </script>
 </body>
 </html>
