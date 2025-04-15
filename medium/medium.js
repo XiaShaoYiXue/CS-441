@@ -20,7 +20,6 @@ function createPatterns(svg) {
         .attr("height", 20)
         .attr("fill", "#4682b4");
         
-    // Add texture lines for lithograph stone
     for (let i = 0; i < 8; i++) {
         lithographPattern.append("line")
             .attr("x1", i*3)
@@ -68,7 +67,6 @@ function createPatterns(svg) {
         .attr("height", 20)
         .attr("fill", "#e07a5f");
         
-    // Add canvas texture and brush strokes
     oilPattern.append("path")
         .attr("d", "M0,0 Q10,10 20,0 M0,20 Q10,10 20,20")
         .attr("stroke", "#ffffff")
@@ -88,7 +86,6 @@ function createPatterns(svg) {
         .attr("height", 20)
         .attr("fill", "#3a9679");
         
-    // Add etched lines
     for (let i = 0; i < 10; i++) {
         etchingPattern.append("line")
             .attr("x1", 0)
@@ -112,7 +109,6 @@ function createPatterns(svg) {
         .attr("height", 20)
         .attr("fill", "#deb887");
         
-    // Add wood grain lines
     for (let i = 0; i < 5; i++) {
         woodcutPattern.append("path")
             .attr("d", `M${i*4},0 Q${i*4+2},10 ${i*4},20`)
@@ -123,7 +119,6 @@ function createPatterns(svg) {
     }
 }
 
-// Get pattern ID for a given medium
 function getPatternId(medium) {
     const mediumLower = medium.toLowerCase();
     if (mediumLower.includes("lithograph")) return "url(#lithograph-pattern)";
@@ -131,7 +126,7 @@ function getPatternId(medium) {
     if (mediumLower.includes("oil on canvas")) return "url(#oil-canvas-pattern)";
     if (mediumLower.includes("etching")) return "url(#etching-pattern)";
     if (mediumLower.includes("woodcut")) return "url(#woodcut-pattern)";
-    return "#f0f0f0"; // Default
+    return "#f0f0f0"; 
 }
 
 function getGenderColor(gender) {
@@ -271,7 +266,6 @@ function createPieChart(medium) {
     
     d3.select("#pie-chart").selectAll("*").remove();
     
-    // Create SVG for pie chart
     const width = 400;
     const height = 350; 
     const svg = d3.select("#pie-chart")
