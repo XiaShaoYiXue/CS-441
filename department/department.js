@@ -1,4 +1,4 @@
-// Main visualization function
+
 async function createVisualization() {
     try {
         const data = await d3.csv('../MoMA_merged_final.csv');
@@ -37,10 +37,9 @@ async function createVisualization() {
             }
         });
         
-        // Convert to array and sort by total count (descending)
         let formattedData = Object.entries(departmentGenderCounts)
             .filter(([department]) => {
-                // Filter out N/A categories and the empty Architecture & Design - Image Archive
+                
                 return department !== "NA" && 
                        department !== "N/A" && 
                        department !== "Architecture & Design - Image Archive";
@@ -68,7 +67,6 @@ async function createVisualization() {
     }
 }
 
-// Function to render the pencil chart
 function renderPencilChart(data) {
     document.getElementById('chart').innerHTML = '';
     
@@ -101,7 +99,7 @@ function renderPencilChart(data) {
     const maxCount = d3.max(data, d => Math.max(d.male, d.female));
     
     const y = d3.scaleLinear()
-        .domain([0, maxCount > 0 ? maxCount : 100]) // Fallback if max is 0
+        .domain([0, maxCount > 0 ? maxCount : 100]) 
         .nice()
         .range([height, 0]);
     
@@ -110,7 +108,6 @@ function renderPencilChart(data) {
         female: "#ed944d"
     };
     
-    // Add axes
     svg.append("g")
         .attr("transform", `translate(0,${height})`)
         .call(d3.axisBottom(x0))
@@ -123,7 +120,6 @@ function renderPencilChart(data) {
     svg.append("g")
         .call(d3.axisLeft(y));
     
-    // Add axis labels
     svg.append("text")
         .attr("class", "axis-label")
         .attr("x", width / 2)
@@ -137,7 +133,6 @@ function renderPencilChart(data) {
         .attr("y", -margin.left + 20)
         .text("Number of Artworks");
     
-    // Add chart title
     svg.append("text")
         .attr("x", width / 2)
         .attr("y", -margin.top / 2)
@@ -146,10 +141,8 @@ function renderPencilChart(data) {
         .style("font-weight", "bold")
         .text("Gender Distribution Across Top 10 MoMA Departments");
     
-    // Create pencil patterns for both genders
     const defs = svg.append("defs");
     
-    // Male pencil pattern (graphite/lead color with purple)
     const malePencil = defs.append("pattern")
         .attr("id", "malePencil")
         .attr("patternUnits", "userSpaceOnUse")
@@ -161,12 +154,10 @@ function renderPencilChart(data) {
         .attr("height", 20)
         .attr("fill", colors.male);
     
-    // Add some texture to the male pencil
     malePencil.append("path")
         .attr("d", `M0,0 L${x1.bandwidth()},0 L${x1.bandwidth()},20 L0,20 Z`)
         .attr("fill", "url(#maleGradient)");
     
-    // Female pencil pattern (colored pencil - orange)
     const femalePencil = defs.append("pattern")
         .attr("id", "femalePencil")
         .attr("patternUnits", "userSpaceOnUse")
@@ -178,39 +169,47 @@ function renderPencilChart(data) {
         .attr("height", 20)
         .attr("fill", colors.female);
     
-    // Add some texture to the female pencil
     femalePencil.append("path")
         .attr("d", `M0,0 L${x1.bandwidth()},0 L${x1.bandwidth()},20 L0,20 Z`)
         .attr("fill", "url(#femaleGradient)");
     
-    // Function to create pencil path
     function createPaintbrushPath(x, y, width, height) {
-        // Parameters for pencil shape
-        const tipHeight = Math.min(30, height * 0.15); // Pencil tip height
-        const eraserHeight = Math.min(15, height * 0.08); // Pencil eraser height
-        const bodyHeight = height - tipHeight - eraserHeight; // Pencil body height
-        const pencilWidth = width; // Width of the pencil
+
+        const tipHeight = Math.min(30, height * 0.15); 
+        const eraserHeight = Math.min(15, height * 0.08); 
+        const bodyHeight = height - tipHeight - eraserHeight; 
+        const pencilWidth = width; 
         
-        // Calculate points
         const leftX = x;
         const rightX = x + pencilWidth;
         const midX = x + (pencilWidth / 2);
         
-        // Define path for pencil shape
-        const path = 
-            // Start at the tip of the pencil (top)
-            `M${midX},${y} ` +
-            // Draw the tip (triangle)
-            `L${leftX},${y + tipHeight} ` +
-            `L${rightX},${y + tipHeight} ` +
-            `Z ` +
-            // Draw the body (rectangle)
+        
+        const waveSegments = 4; 
+        const waveHeight = tipHeight * 0.4; 
+        const waveWidth = pencilWidth / waveSegments;
+        
+        let wavyLine = `M${leftX},${y + tipHeight} `;
+        for (let i = 1; i <= waveSegments; i++) {
+            const waveX = leftX + (i * waveWidth);
+            const waveY = (y + tipHeight) + (i % 2 === 0 ? 0 : waveHeight);
+            wavyLine += `L${waveX},${waveY} `;
+        }
+
+        const bodyPath = 
             `M${leftX},${y + tipHeight} ` +
             `L${leftX},${y + tipHeight + bodyHeight} ` +
             `L${rightX},${y + tipHeight + bodyHeight} ` +
             `L${rightX},${y + tipHeight} ` +
-            `Z ` +
-            // Draw the eraser (slightly wider rectangle)
+            `Z`;
+            
+        const tipPath = 
+            `M${midX},${y} ` +
+            `L${leftX},${y + tipHeight} ` +
+            `L${rightX},${y + tipHeight} ` +
+            `Z`;
+            
+        const eraserPath = 
             `M${leftX - 1},${y + tipHeight + bodyHeight} ` +
             `L${leftX - 1},${y + tipHeight + bodyHeight + eraserHeight} ` +
             `L${rightX + 1},${y + tipHeight + bodyHeight + eraserHeight} ` +
@@ -218,20 +217,28 @@ function renderPencilChart(data) {
             `Z`;
         
         return {
-            mainPath: path,
-            // Return the coordinates for the line between tip and body
+            bodyPath: bodyPath,
+            tipPath: tipPath,
+            eraserPath: eraserPath,
+            wavyTopLine: wavyLine,
             tipLine: {
                 x1: leftX,
                 y1: y + tipHeight,
                 x2: rightX,
                 y2: y + tipHeight
+            },
+            
+            eraserLine: {
+                x1: leftX - 1,
+                y1: y + tipHeight + bodyHeight,
+                x2: rightX + 1,
+                y2: y + tipHeight + bodyHeight
             }
         };
     }
     
-    // Draw pencils for each department and gender
     data.forEach(d => {
-        // Male pencil
+        
         const maleX = x0(d.department) + x1("male");
         const maleHeight = height - y(d.male);
         const maleY = y(d.male);
@@ -240,12 +247,13 @@ function renderPencilChart(data) {
         const malePencil = createPaintbrushPath(maleX, maleY, maleWidth, maleHeight);
         
         svg.append("path")
-            .attr("class", "pencil male-pencil")
-            .attr("d", malePencil.mainPath)
+            .attr("class", "pencil male-pencil body")
+            .attr("d", malePencil.bodyPath)
             .attr("fill", colors.male)
             .attr("opacity", 0.9)
             .on("mouseover", function() {
                 d3.select(this).attr("opacity", 1);
+                d3.selectAll(".male-pencil").attr("opacity", 1);
                 
                 svg.append("text")
                     .attr("class", "value-label")
@@ -256,20 +264,36 @@ function renderPencilChart(data) {
             })
             .on("mouseout", function() {
                 d3.select(this).attr("opacity", 0.9);
+                d3.selectAll(".male-pencil.tip, .male-pencil.eraser").attr("opacity", 0.7);
                 svg.selectAll(".value-label").remove();
             });
             
-        // Add the line between pencil tip and body for male pencil
+        svg.append("path")
+            .attr("class", "pencil male-pencil tip")
+            .attr("d", malePencil.tipPath)
+            .attr("fill", colors.male)
+            
+        svg.append("path")
+            .attr("class", "pencil male-pencil eraser")
+            .attr("d", malePencil.eraserPath)
+            .attr("fill", colors.male)
+            .attr("opacity", 0.7);
+            
+        svg.append("path")
+            .attr("d", malePencil.wavyTopLine)
+            .attr("stroke", "#333")
+            .attr("stroke-width", 1)
+            .attr("fill", "none")
+            
         svg.append("line")
-            .attr("x1", malePencil.tipLine.x1)
-            .attr("y1", malePencil.tipLine.y1)
-            .attr("x2", malePencil.tipLine.x2)
-            .attr("y2", malePencil.tipLine.y2)
+            .attr("x1", malePencil.eraserLine.x1)
+            .attr("y1", malePencil.eraserLine.y1)
+            .attr("x2", malePencil.eraserLine.x2)
+            .attr("y2", malePencil.eraserLine.y2)
             .attr("stroke", "#333")
             .attr("stroke-width", 1)
             .attr("opacity", 0.7);
         
-        // Female pencil
         const femaleX = x0(d.department) + x1("female");
         const femaleHeight = height - y(d.female);
         const femaleY = y(d.female);
@@ -278,12 +302,13 @@ function renderPencilChart(data) {
         const femalePencil = createPaintbrushPath(femaleX, femaleY, femaleWidth, femaleHeight);
         
         svg.append("path")
-            .attr("class", "pencil female-pencil")
-            .attr("d", femalePencil.mainPath)
+            .attr("class", "pencil female-pencil body")
+            .attr("d", femalePencil.bodyPath)
             .attr("fill", colors.female)
             .attr("opacity", 0.9)
             .on("mouseover", function() {
                 d3.select(this).attr("opacity", 1);
+                d3.selectAll(".female-pencil").attr("opacity", 1);
                 
                 svg.append("text")
                     .attr("class", "value-label")
@@ -294,15 +319,32 @@ function renderPencilChart(data) {
             })
             .on("mouseout", function() {
                 d3.select(this).attr("opacity", 0.9);
+                d3.selectAll(".female-pencil.tip, .female-pencil.eraser").attr("opacity", 0.7);
                 svg.selectAll(".value-label").remove();
             });
             
-        // Add the line between pencil tip and body for female pencil
+        svg.append("path")
+            .attr("class", "pencil female-pencil tip")
+            .attr("d", femalePencil.tipPath)
+            .attr("fill", colors.female)
+            
+        svg.append("path")
+            .attr("class", "pencil female-pencil eraser")
+            .attr("d", femalePencil.eraserPath)
+            .attr("fill", colors.female)
+            .attr("opacity", 0.7);
+            
+        svg.append("path")
+            .attr("d", femalePencil.wavyTopLine)
+            .attr("stroke", "#333")
+            .attr("stroke-width", 1)
+            .attr("fill", "none")
+            
         svg.append("line")
-            .attr("x1", femalePencil.tipLine.x1)
-            .attr("y1", femalePencil.tipLine.y1)
-            .attr("x2", femalePencil.tipLine.x2)
-            .attr("y2", femalePencil.tipLine.y2)
+            .attr("x1", femalePencil.eraserLine.x1)
+            .attr("y1", femalePencil.eraserLine.y1)
+            .attr("x2", femalePencil.eraserLine.x2)
+            .attr("y2", femalePencil.eraserLine.y2)
             .attr("stroke", "#333")
             .attr("stroke-width", 1)
             .attr("opacity", 0.7);
