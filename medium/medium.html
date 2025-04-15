@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Art Medium Gender Distribution</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -59,6 +61,60 @@
             font-size: 14px;
             color: #888;
         }
+
+        .poem-container {
+            margin: 40px auto 20px;
+            max-width: 800px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 1s ease-in-out forwards;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translate(-2%, 10px); }
+            to { opacity: 1; transform: translate(-2%, 0); }
+        }
+        
+        .poem-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        
+        .poem-author {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            font-weight: 400;
+            margin-bottom: 20px;
+            color: #555;
+        }
+        
+        .poem-content {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            text-align: center;
+            color: #333;
+        }
+        
+        .fact-content {
+            margin-top: 30px;
+            font-family: 'Lato', sans-serif;
+            font-size: 1rem;
+            text-align: center;
+            color: #333;
+            text-shadow: 0 0 8px rgba(237, 148, 77, 0.3), 0 0 12px rgba(237, 148, 77, 0.2);
+        }
+        
+        .fact-content em {
+            font-style: italic;
+            font-weight: bold;
+            color: #ed944d;
+        }
     </style>
 </head>
 <body>
@@ -73,15 +129,25 @@
             <div id="pie-chart"></div>
         </div>
         
-        <div class="footer">
-            <p>Data Poetry Project on Gender Representation in Art</p>
+        <div class="poem-container">
+            <h1 class="poem-title">Brushstroke of Silence</h1>
+            <h3 class="poem-author">By Xiaonan Li and Molly Han</h3>
+            
+            <div class="poem-content">
+                Through silver prints and lithographs they reign,<br>
+                On penciled paper, their visions remain.<br>
+                Five sacred mediums men claim as throne,<br>
+                While women's hands work shadows, oft unknown.
+            </div>
+            
+            <div class="fact-content">
+                For gelatin silver prints, the most common medium, <em>male artists' works</em> outnumber <em>female artists'</em> by nearly <em>6 to 1</em>.
+            </div>
         </div>
     </div>
 
-    <!-- Load D3.js library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
     
-    <!-- Load your visualization script -->
     <script src="medium.js"></script>
 </body>
 </html>
