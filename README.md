@@ -14,11 +14,12 @@ This project provides a museum-style data storytelling interface to explore gend
 ├── /creation_date/                 ← Embedded visualization: Gender disparities in creation dates
 ├── /department/                    ← Embedded visualization: Gender differences across departments of artwork
 ├── /gap/                           ← Embedded visualization: Time lag in artwork acquisitions by gender
-   └── bubbles_dual_view_10yr_full.json      ← JSON dataset for bubble popularization
+   └── data.json                             ← JSON dataset for bubble popularization
 ├── /medium/                        ← Embedded visualization: Gender differences in medium used
 ├── /puzzle/                        ← Embedded visualization: Average artworks acquired per artist by gender
    └── png files                             ← Image assets used for assembling the puzzle interface
 ├── MoMA_merged_final.csv           ← Dataset used in visualizations
+├── back.png                        ← BAckground image for wall layout
 ├── index.html                      ← Main interactive museum page that includes all visualizations
 └── museum2.jpeg                    ← Background image for the museum layout
 ```
@@ -50,10 +51,8 @@ Please access: https://xiashaoyixue.github.io/CS-441/
 
 Each visualization highlights a unique perspective on gender disparities within the museum's acquisition history. These visualizations are embedded into the main gallery-style interface (`index.html`) using <`iframe`>, allowing viewers to browse them as if walking through a physical exhibit.
 
-- Visualizations are displayed as “artworks” using data-driven figures.
-- The current `index.html` interface is functional but does not yet support interactions like zooming or clicking on individual visualizations — these enhancements will be added in the next milestone.
-- All visualizations are modular and can be explored on their own by opening their respective HTML files directly.
-- Some visualizations (such as the `puzzle` and `gap`) include partially implemented interactive elements that will be completed soon — for example, animated bubbles, timelines, and puzzle mechanics that reflect data evolution.
-- The poem component is also planned as an interactive element and has not been embedded yet due to its unique requirements.
-- Feedback from Milestone 3 primarily concerned technical challenges, and some of which have been addressed. Both team members are currently finalizing their thesis work and will finish them within this week. While the visualizations may look somewhat ugly now, we will complete the remaining interactions and design polish within the coming week.
-
+- All visualizations are now fully implemented as interactive "artworks", each driven by data and framed like pieces in a digital gallery.
+- The main interface (`index.html`) now supports click-based navigation, guided viewing order, and modal zooming to explore each visualization in detail.
+- Viewers are encouraged to follow a prescribed path, aligned with the narrative arc of the accompanying poem. Once all visualizations have been explored, the interface unlocks and allows free navigation.
+- The visualizations remain modular — each can still be accessed independently by opening its corresponding HTML file.
+- The poem component is now fully integrated, both within each individual HTML page and on the main landing page."
