@@ -1,0 +1,438 @@
+{
+  "creation": {
+    "1760": {
+      "female": 0,
+      "male": 5,
+      "female(transwoman)": 0,
+      "gender non-conforming": 0,
+      "non-binary": 0,
+      "transgender woman": 0
+    },
+    "1770": {
+      "female": 0,
+      "male": 0,
+      "female(transwoman)": 0,
+      "gender non-conforming": 0,
+      "non-binary": 0,
+      "transgender woman": 0
+    },
+    "1780": {
+      "female": 0,
+      "male": 0,
+      "female(transwoman)": 0,
+      "gender non-conforming": 0,
+      "non-binary": 0,
+      "transgender woman": 0
+    },
+    "1790": {
+      "female": 0,
+      "male": 81,
+      "female(transwoman)": 0,
+      "gender non-conforming": 0,
+      "non-binary": 0,
+      "transgender woman": 0
+    },
+    "1800": {
+      "female": 0,
+      "male": 4,
+      "female(transwoman)": 0,
+      "gender non-conforming": 0,
+      "non-binary": 0,
+      "transgender woman": 0
+    },
+    "1810": {
+      "female": 0,
+      "male": 327,
+      "female(transwoman)": 0,
+      "gender non-conforming": 0,
+      "non-binary": 0,
+      "transgender woman": 0
+    },
+    "1820": {
+      "female": 0,
+      "male": 22,
+      "female(transwoman)": 0,
+      "gender non-conforming": 0,
+      "non-binary": 0,
+      "transgender woman": 0
+    },
+    "1830": {
+      "female": 0,
+      "male": 9,
+      "female(transwoman)": 0,
+      "gender non-conforming": 0,
+      "non-binary": 0,
+      "transgender woman": 0
+    },
+    "1840": {
+      "female": 0,
+      "male": 250,
+      "female(transwoman)": 0,
+      "gender non-conforming": 0,
+      "non-binary": 0,
+      "transgender woman": 0
+    },
+    "1850": {
+      "female": 4,
+      "male": 669,
+      "female(transwoman)": 0,
+      "gender non-conforming": 0,
+      "non-binary": 0,
+      "transgender woman": 0
+    },
+    "1860": {
+      "female": 15,
+      "male": 1271,
+      "female(transwoman)": 0,
+      "gender non-conforming": 0,
+      "non-binary": 0,
+      "transgender woman": 0
+    },
+    "1870": {
+      "female": 5,
+      "male": 790,
+      "female(transwoman)": 0,
+      "gender non-conforming": 0,
+      "non-binary": 0,
+      "transgender woman": 0
+    },
+    "1880": {
+      "female": 34,
+      "male": 485,
+      "female(transwoman)": 0,
+      "gender non-conforming": 0,
+      "non-binary": 0,
+      "transgender woman": 0
+    },
+    "1890": {
+      "female": 42,
+      "male": 2063,
+      "female(transwoman)": 0,
+      "gender non-conforming": 0,
+      "non-binary": 0,
+      "transgender woman": 0
+    },
+    "1900": {
+      "female": 267,
+      "male": 4257,
+      "female(transwoman)": 0,
+      "gender non-conforming": 0,
+      "non-binary": 0,
+      "transgender woman": 0
+    },
+    "1910": {
+      "female": 782,
+      "male": 6272,
+      "female(transwoman)": 0,
+      "gender non-conforming": 0,
+      "non-binary": 0,
+      "transgender woman": 0
+    },
+    "1920": {
+      "female": 864,
+      "male": 10206,
+      "female(transwoman)": 0,
+      "gender non-conforming": 0,
+      "non-binary": 0,
+      "transgender woman": 0
+    },
+    "1930": {
+      "female": 2008,
+      "male": 11642,
+      "female(transwoman)": 0,
+      "gender non-conforming": 0,
+      "non-binary": 0,
+      "transgender woman": 0
+    },
+    "1940": {
+      "female": 987,
+      "male": 12204,
+      "female(transwoman)": 0,
+      "gender non-conforming": 0,
+      "non-binary": 0,
+      "transgender woman": 0
+    },
+    "1950": {
+      "female": 913,
+      "male": 15733,
+      "female(transwoman)": 0,
+      "gender non-conforming": 0,
+      "non-binary": 0,
+      "transgender woman": 0
+    },
+    "1960": {
+      "female": 2623,
+      "male": 22316,
+      "female(transwoman)": 0,
+      "gender non-conforming": 0,
+      "non-binary": 0,
+      "transgender woman": 0
+    },
+    "1970": {
+      "female": 2946,
+      "male": 16216,
+      "female(transwoman)": 0,
+      "gender non-conforming": 0,
+      "non-binary": 0,
+      "transgender woman": 0
+    },
+    "1980": {
+      "female": 2084,
+      "male": 9538,
+      "female(transwoman)": 0,
+      "gender non-conforming": 0,
+      "non-binary": 2,
+      "transgender woman": 0
+    },
+    "1990": {
+      "female": 3420,
+      "male": 7486,
+      "female(transwoman)": 0,
+      "gender non-conforming": 0,
+      "non-binary": 6,
+      "transgender woman": 0
+    },
+    "2000": {
+      "female": 3954,
+      "male": 7278,
+      "female(transwoman)": 0,
+      "gender non-conforming": 2,
+      "non-binary": 1,
+      "transgender woman": 0
+    },
+    "2010": {
+      "female": 1898,
+      "male": 3294,
+      "female(transwoman)": 0,
+      "gender non-conforming": 0,
+      "non-binary": 4,
+      "transgender woman": 0
+    },
+    "2020": {
+      "female": 281,
+      "male": 433,
+      "female(transwoman)": 62,
+      "gender non-conforming": 0,
+      "non-binary": 0,
+      "transgender woman": 1
+    }
+  },
+  "acquired": {
+    "1760": {
+      "female": 0,
+      "male": 0,
+      "female(transwoman)": 0,
+      "gender non-conforming": 0,
+      "non-binary": 0,
+      "transgender woman": 0
+    },
+    "1770": {
+      "female": 0,
+      "male": 0,
+      "female(transwoman)": 0,
+      "gender non-conforming": 0,
+      "non-binary": 0,
+      "transgender woman": 0
+    },
+    "1780": {
+      "female": 0,
+      "male": 0,
+      "female(transwoman)": 0,
+      "gender non-conforming": 0,
+      "non-binary": 0,
+      "transgender woman": 0
+    },
+    "1790": {
+      "female": 0,
+      "male": 0,
+      "female(transwoman)": 0,
+      "gender non-conforming": 0,
+      "non-binary": 0,
+      "transgender woman": 0
+    },
+    "1800": {
+      "female": 0,
+      "male": 0,
+      "female(transwoman)": 0,
+      "gender non-conforming": 0,
+      "non-binary": 0,
+      "transgender woman": 0
+    },
+    "1810": {
+      "female": 0,
+      "male": 0,
+      "female(transwoman)": 0,
+      "gender non-conforming": 0,
+      "non-binary": 0,
+      "transgender woman": 0
+    },
+    "1820": {
+      "female": 0,
+      "male": 0,
+      "female(transwoman)": 0,
+      "gender non-conforming": 0,
+      "non-binary": 0,
+      "transgender woman": 0
+    },
+    "1830": {
+      "female": 0,
+      "male": 0,
+      "female(transwoman)": 0,
+      "gender non-conforming": 0,
+      "non-binary": 0,
+      "transgender woman": 0
+    },
+    "1840": {
+      "female": 0,
+      "male": 0,
+      "female(transwoman)": 0,
+      "gender non-conforming": 0,
+      "non-binary": 0,
+      "transgender woman": 0
+    },
+    "1850": {
+      "female": 0,
+      "male": 0,
+      "female(transwoman)": 0,
+      "gender non-conforming": 0,
+      "non-binary": 0,
+      "transgender woman": 0
+    },
+    "1860": {
+      "female": 0,
+      "male": 0,
+      "female(transwoman)": 0,
+      "gender non-conforming": 0,
+      "non-binary": 0,
+      "transgender woman": 0
+    },
+    "1870": {
+      "female": 0,
+      "male": 0,
+      "female(transwoman)": 0,
+      "gender non-conforming": 0,
+      "non-binary": 0,
+      "transgender woman": 0
+    },
+    "1880": {
+      "female": 0,
+      "male": 0,
+      "female(transwoman)": 0,
+      "gender non-conforming": 0,
+      "non-binary": 0,
+      "transgender woman": 0
+    },
+    "1890": {
+      "female": 0,
+      "male": 0,
+      "female(transwoman)": 0,
+      "gender non-conforming": 0,
+      "non-binary": 0,
+      "transgender woman": 0
+    },
+    "1900": {
+      "female": 0,
+      "male": 0,
+      "female(transwoman)": 0,
+      "gender non-conforming": 0,
+      "non-binary": 0,
+      "transgender woman": 0
+    },
+    "1910": {
+      "female": 0,
+      "male": 0,
+      "female(transwoman)": 0,
+      "gender non-conforming": 0,
+      "non-binary": 0,
+      "transgender woman": 0
+    },
+    "1920": {
+      "female": 0,
+      "male": 9,
+      "female (transwoman)": 0,
+      "gender non-conforming": 0,
+      "non-binary": 0,
+      "transgender woman": 0
+    },
+    "1930": {
+      "female": 50,
+      "male": 1655,
+      "female (transwoman)": 0,
+      "gender non-conforming": 0,
+      "non-binary": 0,
+      "transgender woman": 0
+    },
+    "1940": {
+      "female": 586,
+      "male": 6737,
+      "female (transwoman)": 0,
+      "gender non-conforming": 0,
+      "non-binary": 0,
+      "transgender woman": 0
+    },
+    "1950": {
+      "female": 383,
+      "male": 5997,
+      "female (transwoman)": 0,
+      "gender non-conforming": 0,
+      "non-binary": 0,
+      "transgender woman": 0
+    },
+    "1960": {
+      "female": 1152,
+      "male": 43120,
+      "female (transwoman)": 0,
+      "gender non-conforming": 0,
+      "non-binary": 0,
+      "transgender woman": 0
+    },
+    "1970": {
+      "female": 1603,
+      "male": 11690,
+      "female (transwoman)": 0,
+      "gender non-conforming": 0,
+      "non-binary": 0,
+      "transgender woman": 0
+    },
+    "1980": {
+      "female": 1189,
+      "male": 9433,
+      "female (transwoman)": 0,
+      "gender non-conforming": 0,
+      "non-binary": 0,
+      "transgender woman": 0
+    },
+    "1990": {
+      "female": 2935,
+      "male": 8990,
+      "female (transwoman)": 0,
+      "gender non-conforming": 0,
+      "non-binary": 0,
+      "transgender woman": 0
+    },
+    "2000": {
+      "female": 5707,
+      "male": 20100,
+      "female (transwoman)": 0,
+      "gender non-conforming": 2,
+      "non-binary": 9,
+      "transgender woman": 0
+    },
+    "2010": {
+      "female": 6803,
+      "male": 19991,
+      "female (transwoman)": 0,
+      "gender non-conforming": 0,
+      "non-binary": 3,
+      "transgender woman": 0
+    },
+    "2020": {
+      "female": 1673,
+      "male": 4386,
+      "female (transwoman)": 62,
+      "gender non-conforming": 0,
+      "non-binary": 1,
+      "transgender woman": 1
+    }
+  }
+}
