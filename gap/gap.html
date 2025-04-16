@@ -2,31 +2,34 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <title>MoMA Bubble Timeline</title>
-  <link rel="stylesheet" href="gap.css" />
-  <script src="https://d3js.org/d3.v7.min.js"></script>
+    <meta charset="UTF-8">
+    <title>Artwork Creation vs Acquisition</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-  <div id="controls">
-    <label for="yearRange">Year: <span id="yearLabel"></span></label><br>
-    <input type="range" id="yearRange" min="1760" max="2020" step="20" value="1760">
-  </div>
+    <h1>Artwork Timeline Visualization</h1>
+    <p class="legend">🔘1 bubble = 1,000 artworks</p>
 
-  <div class="svg-wrapper">
-    <div class="svg-block">
-      <h3>Creation Date</h3>
-      <svg id="created" height="600"></svg>
+    <div class="frame">
+        <div class="container">
+            <div id="left" class="bubble-area">
+                <div class="title">Created</div>
+            </div>
+            <div id="right" class="bubble-area">
+                <div class="title">Acquired</div>
+            </div>
+        </div>
+    
+        <p id="yearLabel">Year: --</p>
+        <input type="range" id="yearSlider">
     </div>
-    <div class="svg-block">
-      <h3>Date Acquired</h3>
-      <svg id="acquired" height="600"></svg>
-    </div>
-  </div>
 
-  <script src="gap.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="script.js"></script>
+
+
 </body>
 
 </html>
