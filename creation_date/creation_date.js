@@ -81,6 +81,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const width = containerWidth - margin.left - margin.right;
         const height = 500 - margin.top - margin.bottom;
         
+        d3.select('#visualization').html('');
+        
         const svg = d3.select('#visualization')
             .append('svg')
             .attr('width', width + margin.left + margin.right)
@@ -121,6 +123,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .attr('x', width / 2)
             .attr('y', height + 40)
             .style('font-size', '14px')
+            .attr('fill', 'white')
             .text('Year of Artwork Creation');
         
         svg.append('text')
@@ -129,6 +132,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .attr('x', -height / 2)
             .attr('y', -50)
             .style('font-size', '14px')
+            .attr('fill', 'white')
             .text('Number of Artworks');
         
         const maleLine = d3.line()
@@ -211,7 +215,6 @@ document.addEventListener('DOMContentLoaded', function() {
             
         drawingArea.on('mousedown', function(event) {
             if (!isRevealMode) {
-
                 isDrawing = true;
                 userDrawingPoints = [];
                 
@@ -286,19 +289,53 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         
         document.getElementById('resetBtn').addEventListener('click', function() {
-            if (!isRevealMode) {
-                userDrawingPoints = [];
-                userLine.attr('d', "");
-                document.getElementById('revealBtn').disabled = true;
+            userDrawingPoints = [];
+            userLine.attr('d', "");
+            
+            if (isRevealMode) {
+                isDrawing = false;
                 
+                drawingArea.on('mousedown', function(event) {
+                    isDrawing = true;
+                    userDrawingPoints = [];
+                    
+                    const coords = d3.pointer(event);
+                    userDrawingPoints.push({x: coords[0], y: coords[1]});
+                    
+                    userLine.attr('d', lineGenerator(userDrawingPoints));
+                });
+                
+                drawingArea.on('mousemove', function(event) {
+                    if (isDrawing) {
+                        const coords = d3.pointer(event);
+                        userDrawingPoints.push({x: coords[0], y: coords[1]});
+                        
+                        userLine.attr('d', lineGenerator(userDrawingPoints));
+                    }
+                });
+                
+                drawingArea.on('mouseup', function() {
+                    if (isDrawing) {
+                        isDrawing = false;
+                    }
+                });
+                
+                drawingArea.on('mouseleave', function() {
+                    if (isDrawing) {
+                        isDrawing = false;
+                    }
+                });
+            } else {
+                document.getElementById('revealBtn').disabled = true;
+            }
+            
+            if (document.getElementById('accuracyFeedback')) {
                 document.getElementById('accuracyFeedback').classList.remove('visible');
             }
         });
         
         document.getElementById('revealBtn').addEventListener('click', function() {
             isRevealMode = true;
-            this.disabled = true;
-            document.getElementById('resetBtn').disabled = true;
             document.querySelector('.female-legend').style.display = 'flex';
             
             femaleLinePath.transition()
@@ -336,7 +373,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         .duration(500)
                         .style('opacity', 0);
                 });
-            
         });
         
         window.addEventListener('resize', function() {
