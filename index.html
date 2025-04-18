@@ -138,7 +138,7 @@
       border: none;
       transform: scale(1.0);
       transform-origin: 0 0;
-      pointer-events: auto; /* Explicitly enable pointer events for modal iframe */
+      pointer-events: auto; 
     }
     
     .close-button {
@@ -175,7 +175,6 @@
       text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
     }
 
-    /* Spotlight navigation styles */
     #spotlight-overlay {
       position: absolute;
       top: 0;
@@ -201,14 +200,13 @@
       cursor: default;
     }
     
-    /* Modified poem positioning */
     #complete-poem {
       position: absolute;
       top: 60px;
-      left: 110px; /* Increased more to prevent cutoff */
-      width: 340px; /* Wider for better text display */
+      left: 110px; 
+      width: 340px; 
       background-color: rgba(255, 255, 255, 0.95);
-      padding: 20px 30px; /* Added more padding on sides */
+      padding: 20px 30px; 
       border-radius: 8px;
       box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
       z-index: 20;
@@ -217,7 +215,7 @@
       display: none;
       animation: fadeIn 1s ease-out;
       transform-origin: top left;
-      transform: scale(0.8); /* Scale down slightly to fit better */
+      transform: scale(0.8); 
     }
     
     @keyframes fadeIn {
@@ -244,13 +242,13 @@
       font-family: 'Cormorant Garamond', serif;
       font-size: 1rem;
       line-height: 1.6;
-      margin-left: 20px; /* Add more left margin to shift content right */
-      padding-right: 10px; /* Add padding on the right side */
+      margin-left: 20px; 
+      padding-right: 10px; 
     }
     
     .stanza p {
-      margin: 0 0 10px 0; /* Add bottom margin to paragraph elements */
-      text-align: left; /* Ensure text is left-aligned within its container */
+      margin: 0 0 10px 0; 
+      text-align: left; 
     }
     
     .stanza {
@@ -273,12 +271,12 @@
       color: #666;
       font-style: italic;
       margin-bottom: 8px;
-      text-align: center; /* Center the visualization titles */
-      padding-right: 20px; /* Add some right padding to match the left margin */
+      text-align: center; 
+      padding-right: 20px; 
     }
     
     .stanza p {
-      margin: 0 0 10px 0; /* Add bottom margin to paragraph elements */
+      margin: 0 0 10px 0; 
     }
     
     .fact-content {
@@ -452,7 +450,6 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      // Define the order of frames to visit
       const visitOrder = [
         'average-artwork-frame',    // Gender vs Artwork number per artist (puzzle)
         'creation-date-frame',      // Creation date
@@ -462,12 +459,10 @@
         'artwork-size-frame'        // Artwork size
       ];
       
-      // Track which frames have been visited
       let visitedFrames = {};
       let currentSpotlightIndex = 0;
       let currentlyViewingIndex = -1;
       
-      // Gather existing UI elements
       const frames = document.querySelectorAll('.frame, .frame1');
       const modal = document.getElementById('visualization-modal');
       const modalIframe = document.getElementById('modal-iframe');
@@ -586,18 +581,15 @@
       }
       document.querySelector('.gallery-container').appendChild(progressIndicator);
       
-      // Add instruction text
       const instruction = document.createElement('div');
       instruction.className = 'spotlight-instruction';
       instruction.textContent = 'Click on the highlighted frame to explore (1/6)';
       document.querySelector('.gallery-container').appendChild(instruction);
       
-      // Create stanza preview container
       const stanzaPreview = document.createElement('div');
       stanzaPreview.className = 'stanza-preview';
       document.querySelector('.gallery-container').appendChild(stanzaPreview);
       
-      // Map visualization frames to poem stanzas
       const visualizationTitles = [
         "Gender vs Artwork number per artist (puzzle)",
         "Creation Date",
@@ -610,22 +602,18 @@
       
       // Function to update spotlight
       function updateSpotlight() {
-        // Reset all frames
         document.querySelectorAll('.frame, .frame1').forEach(frame => {
           frame.classList.remove('active', 'inactive');
           frame.classList.add('inactive');
         });
         
         if (currentSpotlightIndex < visitOrder.length) {
-          // Highlight current frame
           const currentFrame = document.getElementById(visitOrder[currentSpotlightIndex]);
           currentFrame.classList.remove('inactive');
           currentFrame.classList.add('active');
-          
-          // Update instruction
+        
           instruction.textContent = `Click on the highlighted frame to explore (${currentSpotlightIndex + 1}/${visitOrder.length})`;
           
-          // Update progress indicator
           document.querySelectorAll('.progress-dot').forEach((dot, index) => {
             dot.classList.remove('active');
             if (index === currentSpotlightIndex) {
@@ -638,27 +626,9 @@
           
           // Update stanza preview if there are previous visits
           if (currentSpotlightIndex > 0) {
-            // Get the title of the previous visualization
             const prevVisualizationTitle = visualizationTitles[currentSpotlightIndex - 1];
-            
-            // Get the stanza element with matching visualization attribute
             const stanzaElement = document.querySelector(`.stanza[data-visualization="${prevVisualizationTitle}"]`);
             
-            if (stanzaElement) {
-              // Create preview with the last visited stanza
-              stanzaPreview.innerHTML = `
-                <div class="preview-title" style="font-style: italic; font-size: 0.9rem; margin-bottom: 10px; color: #666;">
-                  From the last section:
-                </div>
-                ${stanzaElement.innerHTML}
-              `;
-              stanzaPreview.classList.add('visible');
-              
-              // Hide preview after a delay
-              setTimeout(() => {
-                stanzaPreview.classList.remove('visible');
-              }, 10000);
-            }
           }
         } else {
           // All frames visited - show full poem and remove overlay
@@ -666,11 +636,10 @@
           document.querySelectorAll('.frame, .frame1').forEach(frame => {
             frame.classList.remove('inactive');
           });
-          poemContainer.style.display = 'block'; // Show poem permanently
+          poemContainer.style.display = 'block'; 
           stanzaPreview.classList.remove('visible');
           instruction.textContent = 'Poem complete! Explore freely';
           
-          // All dots completed
           document.querySelectorAll('.progress-dot').forEach(dot => {
             dot.classList.add('completed');
             dot.classList.remove('active');
@@ -678,36 +647,28 @@
         }
       }
       
-      // Modified click handlers for frames that work with the existing modal system
       frames.forEach(frame => {
-        // Store original click listener
         const originalClick = frame.onclick;
         
-        // Replace with a new click handler that respects spotlight navigation
         frame.addEventListener('click', function(e) {
           const frameId = this.id;
           
-          // Only allow clicking the active frame during guided navigation
           if (currentSpotlightIndex < visitOrder.length && !this.classList.contains('active')) {
             e.preventDefault();
             e.stopPropagation();
             return false;
           }
           
-          // Mark frame as currently being viewed
           currentlyViewingIndex = visitOrder.indexOf(frameId);
           
-          // Show the next button if there's another visualization to view
           if (currentlyViewingIndex >= 0 && currentlyViewingIndex < visitOrder.length - 1) {
             nextButton.style.display = 'block';
           } else {
             nextButton.style.display = 'none';
           }
           
-          // Mark this frame as visited
           visitedFrames[frameId] = true;
           
-          // Let the existing modal open logic continue
           const src = this.getAttribute('data-src');
           const title = this.getAttribute('data-title');
           
@@ -728,7 +689,6 @@
           currentSpotlightIndex = currentlyViewingIndex + 1;
           updateSpotlight();
           
-          // If all visualizations have been visited, ensure poem stays visible
           if (currentSpotlightIndex >= visitOrder.length) {
             poemContainer.style.display = 'block';
           }
@@ -743,7 +703,6 @@
         currentSpotlightIndex = currentlyViewingIndex + 1;
         updateSpotlight();
         
-        // If all visualizations have been visited, ensure poem stays visible
         if (currentSpotlightIndex >= visitOrder.length) {
           poemContainer.style.display = 'block';
         }
