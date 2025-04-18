@@ -11,26 +11,18 @@
             font-family: 'Arial', sans-serif;
             margin: 20px;
             background-image: url('../back.png');
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background-color:#fafafa;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 5px;
+            color: white;
         }
         
         h1 {
             text-align: center;
-            color: #333;
+            color: white;
             margin-bottom: 10px;
         }
         
         .subtitle {
             text-align: center;
-            color: #666;
+            color: #ddd;
             margin-bottom: 30px;
             font-style: italic;
         }
@@ -43,30 +35,24 @@
         }
         
         .chart-container-wrapper {
-            width: 65%;
+            width: 70%;
         }
         
         .chart-container {
             overflow-x: auto;
-            background-color: #fafafa;
-            background-image: linear-gradient(rgba(255, 255, 255, 0.7) 1px, transparent 1px),
-                            linear-gradient(90deg, rgba(255, 255, 255, 0.7) 1px, transparent 1px);
-            background-size: 20px 20px, 20px 20px;
             border-radius: 8px;
             padding: 15px;
-            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.05);
         }
         
         .poem-container {
             width: 30%;
-            margin: 20px 0;
+            margin: 100px -50px 0 0;
             padding: 20px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             animation: fadeIn 1s ease-in-out forwards;
-            border-left: 2px solid rgba(95, 76, 115, 0.3);
         }
         
         @keyframes fadeIn {
@@ -77,12 +63,14 @@
         .axis-label {
             font-weight: bold;
             text-anchor: middle;
+            fill: white;
         }
         
         .legend {
             display: flex;
             justify-content: center;
             margin-top: 20px;
+            color: white;
         }
         
         .legend-item {
@@ -111,31 +99,15 @@
         .value-label {
             font-weight: bold;
             font-size: 12px;
+            fill: white;
         }
 
-        .axis-label {
-            font-weight: bold;
-            text-anchor: middle;
-            font-size: 14px;
+        .axis text {
+            fill: white;
         }
         
-        /* Poem styling */
-        .poem-title {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.8rem;
-            font-weight: 600;
-            margin-bottom: 5px;
-            color: #333;
-            text-align: center;
-        }
-        
-        .poem-author {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.1rem;
-            font-weight: 400;
-            margin-bottom: 20px;
-            color: #555;
-            text-align: center;
+        .axis path, .axis line {
+            stroke: #aaa;
         }
         
         .poem-content {
@@ -143,7 +115,7 @@
             font-size: 1.1rem;
             line-height: 1.6;
             text-align: center;
-            color: #333;
+            color: white;
         }
         
         .fact-content {
@@ -151,7 +123,7 @@
             font-family: 'Lato', sans-serif;
             font-size: 0.95rem;
             text-align: center;
-            color: #333;
+            color: white;
             text-shadow: 0 0 8px rgba(95, 76, 115, 0.3), 0 0 12px rgba(95, 76, 115, 0.2);
         }
         
@@ -169,47 +141,44 @@
                 width: 100%;
             }
             .poem-container {
-                border-left: none;
-                border-top: 2px solid rgba(95, 76, 115, 0.3);
-                margin-top: 30px;
+                border-right: none;
+                border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+                margin: 0 0 30px 0;
+                padding-bottom: 30px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Gender Representation in MoMA Collection</h1>
-        <p class="subtitle">Exploring the intersection of gender and departmental representation in artwork</p>
-        
-        <div class="content-wrapper">
-            <div class="chart-container-wrapper">
-                <div class="chart-container" id="chart"></div>
-                
-                <div class="legend">
-                    <div class="legend-item">
-                        <div class="legend-color" style="background-color: #5f4c73;"></div>
-                        <span>Male</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background-color: #ed944d;"></div>
-                        <span>Female</span>
-                    </div>
-                </div>
+    <h1>Gender Representation in MoMA Collection</h1>
+    <p class="subtitle">Exploring the intersection of gender and departmental representation in artwork</p>
+    
+    <div class="content-wrapper">
+        <div class="poem-container">
+            
+            <div class="poem-content">
+                In every wing where art resides,<br>
+                Male names dominate on all sides.<br>
+                Each department wall with frames of gold,<br>
+                Yet women's names stay dim and cold.
             </div>
             
-            <div class="poem-container">
-                <h1 class="poem-title">Brushstroke of Silence</h1>
-                <h3 class="poem-author">By Xiaonan Li and Molly Han</h3>
-                
-                <div class="poem-content">
-                    In every wing where art resides,<br>
-                    Male names dominate on all sides.<br>
-                    Each department wall with frames of gold,<br>
-                    Yet women's names stay dim and cold.
+            <div class="fact-content">
+                Across all MoMA departments, <em>male artists</em> are represented <em>5 times more</em> than <em>female artists</em>, with the greatest disparity in Architecture & Design.
+            </div>
+        </div>
+        
+        <div class="chart-container-wrapper">
+            <div class="chart-container" id="chart"></div>
+            
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #5f4c73;"></div>
+                    <span>Male</span>
                 </div>
-                
-                <div class="fact-content">
-                    Across all MoMA departments, <em>male artists</em> are represented <em>5 times more</em> than <em>female artists</em>, with the greatest disparity in Architecture & Design.
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #ed944d;"></div>
+                    <span>Female</span>
                 </div>
             </div>
         </div>
