@@ -1,4 +1,3 @@
-
 async function createVisualization() {
     try {
         const data = await d3.csv('../MoMA_merged_final.csv');
@@ -61,7 +60,7 @@ async function createVisualization() {
     } catch (error) {
         console.error('Error loading or processing data:', error);
         document.getElementById('chart').innerHTML = `
-            <p style="color: red; text-align: center;">
+            <p style="color: white; text-align: center;">
                 Error loading data: ${error.message}
             </p>`;
     }
@@ -108,22 +107,30 @@ function renderPencilChart(data) {
         female: "#ed944d"
     };
     
+    // X-axis with white text
     svg.append("g")
         .attr("transform", `translate(0,${height})`)
+        .attr("class", "axis")
         .call(d3.axisBottom(x0))
         .selectAll("text")
         .attr("transform", "rotate(-45)")
         .style("text-anchor", "end")
         .attr("dx", "-.8em")
-        .attr("dy", ".15em");
+        .attr("dy", ".15em")
+        .style("fill", "white");
     
+    // Y-axis with white text
     svg.append("g")
-        .call(d3.axisLeft(y));
+        .attr("class", "axis")
+        .call(d3.axisLeft(y))
+        .selectAll("text")
+        .style("fill", "white");
     
     svg.append("text")
         .attr("class", "axis-label")
         .attr("x", width / 2)
         .attr("y", height + margin.bottom - 20)
+        .attr("fill", "white")
         .text("Department");
     
     svg.append("text")
@@ -131,6 +138,7 @@ function renderPencilChart(data) {
         .attr("transform", "rotate(-90)")
         .attr("x", -height / 2)
         .attr("y", -margin.left + 20)
+        .attr("fill", "white")
         .text("Number of Artworks");
     
     svg.append("text")
@@ -139,7 +147,8 @@ function renderPencilChart(data) {
         .attr("text-anchor", "middle")
         .style("font-size", "16px")
         .style("font-weight", "bold")
-        .text("Gender Distribution Across Top 10 MoMA Departments");
+        .style("fill", "white")
+        .text("Gender Distribution Across MoMA Departments");
     
     const defs = svg.append("defs");
     
@@ -237,7 +246,7 @@ function renderPencilChart(data) {
         };
     }
     
-    data.forEach(d => {
+    data.forEach((d, i) => {
         
         const maleX = x0(d.department) + x1("male");
         const maleHeight = height - y(d.male);
@@ -246,52 +255,89 @@ function renderPencilChart(data) {
         
         const malePencil = createPaintbrushPath(maleX, maleY, maleWidth, maleHeight);
         
+        // Set initial height to 0 for animation
+        const initialMalePencil = createPaintbrushPath(maleX, height, maleWidth, 0);
+        
         svg.append("path")
             .attr("class", "pencil male-pencil body")
-            .attr("d", malePencil.bodyPath)
+            .attr("d", initialMalePencil.bodyPath) // Start with height 0
             .attr("fill", colors.male)
             .attr("opacity", 0.9)
-            .on("mouseover", function() {
-                d3.select(this).attr("opacity", 1);
-                d3.selectAll(".male-pencil").attr("opacity", 1);
-                
-                svg.append("text")
-                    .attr("class", "value-label")
-                    .attr("x", maleX + maleWidth / 2)
-                    .attr("y", maleY - 10)
-                    .attr("text-anchor", "middle")
-                    .text(d.male);
-            })
-            .on("mouseout", function() {
-                d3.select(this).attr("opacity", 0.9);
-                d3.selectAll(".male-pencil.tip, .male-pencil.eraser").attr("opacity", 0.7);
-                svg.selectAll(".value-label").remove();
+            .transition() // Add transition
+            .duration(1000) // 1 second animation
+            .delay(i * 100) // Stagger by index instead of department name
+            .attr("d", malePencil.bodyPath) // Animate to full height
+            .on("end", function() {
+                // Add hover events after animation completes
+                d3.select(this)
+                    .on("mouseover", function() {
+                        d3.select(this).attr("opacity", 1);
+                        d3.selectAll(".male-pencil").attr("opacity", 1);
+                        
+                        svg.append("text")
+                            .attr("class", "value-label")
+                            .attr("x", maleX + maleWidth / 2)
+                            .attr("y", maleY - 10)
+                            .attr("text-anchor", "middle")
+                            .attr("fill", "white")
+                            .text(d.male);
+                    })
+                    .on("mouseout", function() {
+                        d3.select(this).attr("opacity", 0.9);
+                        d3.selectAll(".male-pencil.tip, .male-pencil.eraser").attr("opacity", 0.7);
+                        svg.selectAll(".value-label").remove();
+                    });
             });
             
         svg.append("path")
             .attr("class", "pencil male-pencil tip")
-            .attr("d", malePencil.tipPath)
+            .attr("d", initialMalePencil.tipPath)
             .attr("fill", colors.male)
+            .attr("opacity", 0) // Start invisible
+            .transition()
+            .duration(1000)
+            .delay(i * 100 + 800) // Show after body grows
+            .attr("d", malePencil.tipPath)
+            .attr("opacity", 1);
             
         svg.append("path")
             .attr("class", "pencil male-pencil eraser")
-            .attr("d", malePencil.eraserPath)
+            .attr("d", initialMalePencil.eraserPath)
             .attr("fill", colors.male)
+            .attr("opacity", 0) // Start invisible
+            .transition()
+            .duration(1000)
+            .delay(i * 100 + 800) // Show after body grows
+            .attr("d", malePencil.eraserPath)
             .attr("opacity", 0.7);
             
         svg.append("path")
-            .attr("d", malePencil.wavyTopLine)
-            .attr("stroke", "#333")
+            .attr("d", initialMalePencil.wavyTopLine)
+            .attr("stroke", "white")
             .attr("stroke-width", 1)
             .attr("fill", "none")
+            .attr("opacity", 0) // Start invisible
+            .transition()
+            .duration(500)
+            .delay(i * 100 + 800) // Show after body grows
+            .attr("d", malePencil.wavyTopLine)
+            .attr("opacity", 1);
             
         svg.append("line")
+            .attr("x1", initialMalePencil.eraserLine.x1)
+            .attr("y1", initialMalePencil.eraserLine.y1)
+            .attr("x2", initialMalePencil.eraserLine.x2)
+            .attr("y2", initialMalePencil.eraserLine.y2)
+            .attr("stroke", "white")
+            .attr("stroke-width", 1)
+            .attr("opacity", 0) // Start invisible
+            .transition()
+            .duration(500)
+            .delay(i * 100 + 800) // Show after body grows
             .attr("x1", malePencil.eraserLine.x1)
             .attr("y1", malePencil.eraserLine.y1)
             .attr("x2", malePencil.eraserLine.x2)
             .attr("y2", malePencil.eraserLine.y2)
-            .attr("stroke", "#333")
-            .attr("stroke-width", 1)
             .attr("opacity", 0.7);
         
         const femaleX = x0(d.department) + x1("female");
@@ -301,52 +347,89 @@ function renderPencilChart(data) {
         
         const femalePencil = createPaintbrushPath(femaleX, femaleY, femaleWidth, femaleHeight);
         
+        // Set initial height to 0 for animation
+        const initialFemalePencil = createPaintbrushPath(femaleX, height, femaleWidth, 0);
+        
         svg.append("path")
             .attr("class", "pencil female-pencil body")
-            .attr("d", femalePencil.bodyPath)
+            .attr("d", initialFemalePencil.bodyPath) // Start with height 0
             .attr("fill", colors.female)
             .attr("opacity", 0.9)
-            .on("mouseover", function() {
-                d3.select(this).attr("opacity", 1);
-                d3.selectAll(".female-pencil").attr("opacity", 1);
-                
-                svg.append("text")
-                    .attr("class", "value-label")
-                    .attr("x", femaleX + femaleWidth / 2)
-                    .attr("y", femaleY - 10)
-                    .attr("text-anchor", "middle")
-                    .text(d.female);
-            })
-            .on("mouseout", function() {
-                d3.select(this).attr("opacity", 0.9);
-                d3.selectAll(".female-pencil.tip, .female-pencil.eraser").attr("opacity", 0.7);
-                svg.selectAll(".value-label").remove();
+            .transition() // Add transition
+            .duration(1000) // 1 second animation
+            .delay(i * 100 + 200) // Slightly after male bars
+            .attr("d", femalePencil.bodyPath) // Animate to full height
+            .on("end", function() {
+                // Add hover events after animation completes
+                d3.select(this)
+                    .on("mouseover", function() {
+                        d3.select(this).attr("opacity", 1);
+                        d3.selectAll(".female-pencil").attr("opacity", 1);
+                        
+                        svg.append("text")
+                            .attr("class", "value-label")
+                            .attr("x", femaleX + femaleWidth / 2)
+                            .attr("y", femaleY - 10)
+                            .attr("text-anchor", "middle")
+                            .attr("fill", "white")
+                            .text(d.female);
+                    })
+                    .on("mouseout", function() {
+                        d3.select(this).attr("opacity", 0.9);
+                        d3.selectAll(".female-pencil.tip, .female-pencil.eraser").attr("opacity", 0.7);
+                        svg.selectAll(".value-label").remove();
+                    });
             });
             
         svg.append("path")
             .attr("class", "pencil female-pencil tip")
-            .attr("d", femalePencil.tipPath)
+            .attr("d", initialFemalePencil.tipPath)
             .attr("fill", colors.female)
+            .attr("opacity", 0) // Start invisible
+            .transition()
+            .duration(1000)
+            .delay(i * 100 + 1000) // Show after body grows
+            .attr("d", femalePencil.tipPath)
+            .attr("opacity", 1);
             
         svg.append("path")
             .attr("class", "pencil female-pencil eraser")
-            .attr("d", femalePencil.eraserPath)
+            .attr("d", initialFemalePencil.eraserPath)
             .attr("fill", colors.female)
+            .attr("opacity", 0) // Start invisible
+            .transition()
+            .duration(1000)
+            .delay(i * 100 + 1000) // Show after body grows
+            .attr("d", femalePencil.eraserPath)
             .attr("opacity", 0.7);
             
         svg.append("path")
-            .attr("d", femalePencil.wavyTopLine)
-            .attr("stroke", "#333")
+            .attr("d", initialFemalePencil.wavyTopLine)
+            .attr("stroke", "white")
             .attr("stroke-width", 1)
             .attr("fill", "none")
+            .attr("opacity", 0) // Start invisible
+            .transition()
+            .duration(500)
+            .delay(i * 100 + 1000) // Show after body grows
+            .attr("d", femalePencil.wavyTopLine)
+            .attr("opacity", 1);
             
         svg.append("line")
+            .attr("x1", initialFemalePencil.eraserLine.x1)
+            .attr("y1", initialFemalePencil.eraserLine.y1)
+            .attr("x2", initialFemalePencil.eraserLine.x2)
+            .attr("y2", initialFemalePencil.eraserLine.y2)
+            .attr("stroke", "white")
+            .attr("stroke-width", 1)
+            .attr("opacity", 0) // Start invisible
+            .transition()
+            .duration(500)
+            .delay(i * 100 + 1000) // Show after body grows
             .attr("x1", femalePencil.eraserLine.x1)
             .attr("y1", femalePencil.eraserLine.y1)
             .attr("x2", femalePencil.eraserLine.x2)
             .attr("y2", femalePencil.eraserLine.y2)
-            .attr("stroke", "#333")
-            .attr("stroke-width", 1)
             .attr("opacity", 0.7);
     });
 }
