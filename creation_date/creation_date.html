@@ -17,6 +17,7 @@
         }
         h1 {
             text-align: center;
+            margin-top: 0;
             margin-bottom: 5px;
             color: white;
         }
@@ -30,7 +31,9 @@
         .instructions {
             text-align: center;
             margin: 10px 0;
-            padding: 15px;
+            margin-bottom: 0;
+            font-size: 0.9rem;
+            padding: 5px;
             background-color: rgba(0, 0, 0, 0.3);
             border-radius: 6px;
             border-left: 4px solid #3498db;
@@ -49,7 +52,6 @@
         .visualization {
             width: 100%;
             height: 500px;
-            margin: 0 0;
             position: relative;
         }
         
@@ -78,8 +80,8 @@
         
         .poem-content {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 1.2rem;
-            line-height: 1.6;
+            font-size: 1.1rem;
+            line-height: 1.5;
             text-align: center;
             color: white;
             max-width: 600px;
@@ -89,7 +91,7 @@
         .fact-content {
             margin-top: 30px;
             font-family: 'Lato', sans-serif;
-            font-size: 1rem;
+            font-size: 0.85rem;
             text-align: center;
             color: white;
             text-shadow: 0 0 8px rgba(237, 148, 77, 0.3), 0 0 12px rgba(237, 148, 77, 0.2);
@@ -123,7 +125,8 @@
         .legend {
             display: flex;
             justify-content: center;
-            margin-top: 20px;
+            margin-top: 0px;
+            width: 90%;
         }
         .legend-item {
             display: flex;
@@ -138,24 +141,54 @@
             margin-right: 8px;
             border-radius: 2px;
         }
-        .controls {
+        
+        .chart-wrapper {
+            width: 100%; 
+            position: relative;
+            margin-top: -10px;
+            margin-left: 10px;
+            padding-right: 0;
             display: flex;
-            justify-content: center;
-            margin: 20px 0;
-            gap: 20px;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 0px;
         }
         
+        .chart-container {
+            width: 92%; 
+        }
+        
+        .controls {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            position: absolute;
+            right: 0;
+            top: 70px; 
+            width: auto;
+            gap: 10px; 
+            margin-left: 0; 
+            padding-left: 0; 
+        }
+
         button {
-            padding: 12px 24px;
+            padding: 8px 8px; 
             border-radius: 6px;
             border: none;
+            width: 100%;
+            max-width: 110px; /* Reduced max-width */
             background-color: #3498db;
             color: white;
-            font-size: 16px;
+            font-size: 12px; /* Smaller font */
             cursor: pointer;
             transition: background-color 0.3s;
             font-family: 'Lato', sans-serif;
             box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            white-space: nowrap; /* Prevent text wrapping */
+            text-overflow: ellipsis; /* Add ellipsis if text overflows */
+            overflow: hidden; /* Hide overflow text */
         }
         button:hover {
             background-color: #2980b9;
@@ -182,11 +215,12 @@
         }
         
         .notes {
-            margin-top: 10px;
-            font-size: 14px;
+            margin-top: 5px;
+            font-size: 12px;
             color: #ddd;
             font-style: italic;
             text-align: center;
+            width: 90%;
         }
         
         .male-line {
@@ -223,23 +257,19 @@
             display: flex;
             justify-content: space-between;
             width: 100%;
-            max-width: 1200px;
+            max-width: 1000px;
             margin: 0 auto;
         }
         
         .left-column {
-            width: 30%; 
-            padding-right: 10px;
+            width: 33%; 
+            padding-right: 0px;
             padding-left: 0;
         }
         
         .right-column {
             width: 70%;
-        }
-        
-        .chart-wrapper {
-            width: 100%; 
-            position: relative;
+            padding-right: 0;
         }
         
         @media (max-width: 900px) {
@@ -270,13 +300,23 @@
                 font-size: 1rem;
             }
             
-            .controls {
+            .chart-wrapper {
                 flex-direction: column;
-                align-items: center;
+            }
+            
+            .chart-container {
+                width: 100%;
+            }
+            
+            .controls {
+                width: 100%;
+                flex-direction: row;
+                margin-top: 10px;
+                justify-content: center;
             }
             
             button {
-                width: 80%;
+                width: auto;
             }
         }
     </style>
@@ -286,7 +326,7 @@
     <div class="subtitle">MoMA Collection (1800-2020)</div>
     
     <div class="instructions">
-        <p><strong>Interactive Challenge:</strong> The purple line shows artworks by male artists. <strong>Can you draw</strong> what you think the line for female artists looks like? Click and drag on the chart to draw your prediction.</p>
+        <p><strong>Interactive Challenge:</strong> The purple line shows artworks created by male artists. <strong>Can you draw</strong> what you think the line for female artists looks like?</p>
     </div>
     
     <div class="main-content">
@@ -313,30 +353,34 @@
             
         <div class="right-column">
             <div class="chart-wrapper">
-                <div id="visualization" class="visualization"></div>
+                <!-- Chart container with visualization, legend and notes -->
+                <div class="chart-container">
+                    <div id="visualization" class="visualization"></div>
+                    
+                    <div class="legend">
+                        <div class="legend-item">
+                            <div class="legend-color" style="background-color: #5f4c73;"></div>
+                            <span>Male Artists</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background-color: #3498db; height: 3px; border-style: dashed;"></div>
+                            <span>Your Prediction</span>
+                        </div>
+                        <div class="legend-item female-legend" style="display: none;">
+                            <div class="legend-color" style="background-color: #ed944d;"></div>
+                            <span>Female Artists (Actual)</span>
+                        </div>
+                    </div>
+                    
+                    <div class="notes">
+                        <p>Data represents the gender distribution of artists whose works appear in the MoMA collection, based on the creation date of each artwork. Years with fewer than 5 total artworks are excluded.</p>
+                    </div>
+                </div>
                 
+                <!-- Controls moved to the right side with reduced spacing -->
                 <div class="controls">
-                    <button id="resetBtn">Reset Drawing</button>
-                    <button id="revealBtn" disabled>Reveal Actual Data</button>
-                </div>
-                
-                <div class="legend">
-                    <div class="legend-item">
-                        <div class="legend-color" style="background-color: #5f4c73;"></div>
-                        <span>Male Artists</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background-color: #3498db; height: 3px; border-style: dashed;"></div>
-                        <span>Your Prediction</span>
-                    </div>
-                    <div class="legend-item female-legend" style="display: none;">
-                        <div class="legend-color" style="background-color: #ed944d;"></div>
-                        <span>Female Artists (Actual)</span>
-                    </div>
-                </div>
-                
-                <div class="notes">
-                    <p>Data represents the gender distribution of artists whose works appear in the MoMA collection, based on the creation date of each artwork. Years with fewer than 5 total artworks are excluded.</p>
+                    <button id="resetBtn">Reset</button>
+                    <button id="revealBtn" disabled>Reveal Data</button>
                 </div>
             </div>
         </div>
