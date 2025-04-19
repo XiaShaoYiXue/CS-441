@@ -81,6 +81,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const width = containerWidth - margin.left - margin.right;
         const height = 500 - margin.top - margin.bottom;
         
+        // Clear any existing visualization
         d3.select('#visualization').html('');
         
         const svg = d3.select('#visualization')
@@ -118,6 +119,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .attr('class', 'axis')
             .call(yAxis);
         
+        // Add X axis label with white fill
         svg.append('text')
             .attr('text-anchor', 'middle')
             .attr('x', width / 2)
@@ -126,6 +128,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .attr('fill', 'white')
             .text('Year of Artwork Creation');
         
+        // Add Y axis label with white fill
         svg.append('text')
             .attr('text-anchor', 'middle')
             .attr('transform', 'rotate(-90)')
@@ -288,13 +291,18 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         
+        // Modified reset functionality - only clears user drawing, keeps real data visible if revealed
         document.getElementById('resetBtn').addEventListener('click', function() {
+            // Clear user drawing in all cases
             userDrawingPoints = [];
             userLine.attr('d', "");
             
             if (isRevealMode) {
+                // In reveal mode, leave the female data visible 
+                // but allow the user to draw a new prediction
                 isDrawing = false;
                 
+                // Enable drawing area for a new prediction
                 drawingArea.on('mousedown', function(event) {
                     isDrawing = true;
                     userDrawingPoints = [];
@@ -305,6 +313,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     userLine.attr('d', lineGenerator(userDrawingPoints));
                 });
                 
+                // Update other mouse events to work with revealed data
                 drawingArea.on('mousemove', function(event) {
                     if (isDrawing) {
                         const coords = d3.pointer(event);
@@ -326,9 +335,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 });
             } else {
+                // If not in reveal mode, just disable the reveal button until user draws again
                 document.getElementById('revealBtn').disabled = true;
             }
             
+            // Remove any feedback if present
             if (document.getElementById('accuracyFeedback')) {
                 document.getElementById('accuracyFeedback').classList.remove('visible');
             }
@@ -376,6 +387,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         
         window.addEventListener('resize', function() {
+            // Resize handling if needed
         });
     }
 });
