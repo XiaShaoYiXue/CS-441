@@ -12,44 +12,43 @@
     <h1>Artwork Timeline Visualization</h1>
     <p class="legend">🔘1 bubble = 1,000 artworks</p>
 
-    <div class="frame">
-        <div class="container">
-            <div id="left" class="bubble-area">
-                <div class="title">Created</div>
+    <div class="main-container">
+        <div class="frame">
+            <div class="container">
+                <div id="left" class="bubble-area">
+                    <div class="title">Created</div>
+                </div>
+                <div id="right" class="bubble-area">
+                    <div class="title">Acquired</div>
+                </div>
             </div>
-            <div id="right" class="bubble-area">
-                <div class="title">Acquired</div>
+
+            <p id="yearLabel">Year: --</p>
+            <input type="range" id="yearSlider">
+        </div>
+
+        <div class="poem-fact-container">
+            <div id="poem">
+                Now they say, "Her work is seen so fast," <br>
+                But forget the centuries she passed. <br>
+                He held the brush at boyhood's gate, <br>
+                While she was paused by custom's weight. <br><br>
+                He shaped his dreams while still a youth, <br>
+                She learned to quiet her own truth. <br>
+                The time he spent in canvas and oil, <br>
+                She spent in kitchens, in hidden toil.
+            </div>
+
+            <div id="fact">
+                On average, artworks by male artists were acquired <em>27.8</em> years after creation,
+                compared to <em>22.6</em> years for female artists.
+                However, male artists' works tend to have been created much earlier.
             </div>
         </div>
-    
-        <p id="yearLabel">Year: --</p>
-        <input type="range" id="yearSlider">
     </div>
 
-    <div class="poem-fact-container">
-        <div id="poem">
-          <h1>Brushstroke of Silence</h1>
-          <h3>By Xiaonan Li and Molly Han</h3>
-          <br>
-          Now they say, "Her work is seen so fast," <br>
-          But forget the centuries she passed. <br>
-          He held the brush at boyhood's gate, <br>
-          While she was paused by custom's weight. <br><br>
-          He shaped his dreams while still a youth, <br>
-          She learned to quiet her own truth. <br>
-          The time he spent in canvas and oil, <br>
-          She spent in kitchens, in hidden toil.
-        </div>
-      
-        <div id="fact">
-          On average, artworks by male artists were acquired <em>27.8</em> years after creation, 
-          compared to <em>22.6</em> years for female artists. 
-          However, male artists' works tend to have been created much earlier.
-        </div>
-    </div>      
-
     <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script src="gap.js"></script>
+    <script src="gapt.js"></script>
 
 
 </body>
