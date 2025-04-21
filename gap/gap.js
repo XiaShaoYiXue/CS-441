@@ -1,5 +1,5 @@
 const colorMap = {
-  "female": "#e75480",
+  "female": "#db7e32",
   "male": "#1e90ff",
   "non-binary": "gray",
   "gender non-conforming": "#FFA500",
