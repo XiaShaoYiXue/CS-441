@@ -118,8 +118,21 @@ document.addEventListener('DOMContentLoaded', function() {
         svg.append('g')
             .attr('class', 'axis')
             .call(yAxis);
+
+        svg.append("text")
+            .attr("x", width / 2)
+            .attr("y", -margin.top / 2+20)
+            .attr("text-anchor", "middle")
+            .attr("fill", "white")
+            .style("font-size", "18px")
+            .style("font-weight", "bold")
+            .attr("opacity", 0)
+            .transition()
+            .duration(800)
+            .delay(300)
+            .attr("opacity", 1)
+            .text("Artwork Creation Timeline");
         
-        // Add X axis label with white fill
         svg.append('text')
             .attr('text-anchor', 'middle')
             .attr('x', width / 2)
@@ -127,8 +140,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .style('font-size', '14px')
             .attr('fill', 'white')
             .text('Year of Artwork Creation');
-        
-        // Add Y axis label with white fill
+
         svg.append('text')
             .attr('text-anchor', 'middle')
             .attr('transform', 'rotate(-90)')
@@ -169,7 +181,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .attr('cx', d => xScale(d.year))
             .attr('cy', d => yScale(d.male))
             .attr('r', 3)
-            .attr('fill', '#5f4c73')
+            .attr('fill', '#1e90ff')
             .style('opacity', 0)
             .on('mouseover', function(event, d) {
                 d3.select(this).style('opacity', 1);
@@ -205,7 +217,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const userLine = svg.append('path')
             .attr('class', 'user-line')
             .attr('fill', 'none')
-            .attr('stroke', '#3498db')
+            .attr('stroke', '#edcafa')
             .attr('stroke-width', 3)
             .attr('stroke-dasharray', '5,5');
             
