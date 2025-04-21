@@ -1,5 +1,5 @@
 function createBoxPlot(data) {
-    
+
   const margin = { top: 60, right: 50, bottom: 80, left: 90 };
   const width = 800 - margin.left - margin.right;
   const height = 500 - margin.top - margin.bottom;
@@ -83,7 +83,7 @@ function createBoxPlot(data) {
 
   const boxColor = "#ffffff";
   const pointColors = {
-      'male': "#5f4c73",  
+      'male': "#1e90ff",  
       'female': "#ed944d"  
     };
   
