@@ -31,7 +31,7 @@
       position: relative;
       width: 100%;
       height: 100vh;
-      background-image: url('background_new.png');
+      background-image: url('museum_new.jpg');
       background-size: cover;
       background-position: center;
     }
@@ -262,16 +262,9 @@
       padding-bottom: 0;
     }
     
+    /* Removing the ::before content that displays the data-visualization as a subtitle */
     .stanza[data-visualization]::before {
-      content: attr(data-visualization);
-      display: block;
-      font-family: 'Lato', sans-serif;
-      font-size: 0.85rem;
-      color: #666;
-      font-style: italic;
-      margin-bottom: 8px;
-      text-align: center; 
-      padding-right: 20px; 
+      content: none;
     }
     
     .stanza p {
@@ -484,7 +477,7 @@
           <h3 class="poem-author">By Xiaonan Li and Molly Han</h3>
           
           <div class="poem-content">
-            <div class="stanza" data-visualization="Gender vs Artwork number per artist (puzzle)">
+            <div class="stanza" data-visualization="">
               <p>We were told to bend like reeds,<br>
               To weave love softly, to serve others' needs.<br>
               They call us fragile, soft as art,<br>
@@ -496,7 +489,7 @@
               Yet in my soul, it's paint that guides.</p>
             </div>
             
-            <div class="stanza" data-visualization="Creation Date">
+            <div class="stanza" data-visualization="">
               <p>I long to draw what my heart perceives,<br>
               The feelings, the echoes my soul believes.<br>
               Yet roles and burdens steal time away,<br>
@@ -508,7 +501,7 @@
               Their lines soar high, ours drift astray.</p>
             </div>
             
-            <div class="stanza" data-visualization="Acquired Data Gap">
+            <div class="stanza" data-visualization="">
               <p>Now they say, "Her work is seen so fast,"<br>
               But forget the centuries she passed.<br>
               He held the brush at boyhood's gate,<br>
@@ -520,21 +513,21 @@
               She spent in kitchens, in hidden toil.</p>
             </div>
             
-            <div class="stanza" data-visualization="Artwork Department">
+            <div class="stanza" data-visualization="">
               <p>In every wing where art resides,<br>
               Male names dominate on all sides.<br>
               Each department wall with frames of gold,<br>
               Yet women's names stay dim and cold.</p>
             </div>
             
-            <div class="stanza" data-visualization="Artwork Medium">
+            <div class="stanza" data-visualization="">
               <p>Through silver prints and lithographs they reign,<br>
               On penciled paper, their visions remain.<br>
               Five sacred mediums men claim as throne,<br>
               While women's hands work shadows, oft unknown.</p>
             </div>
             
-            <div class="stanza" data-visualization="Artwork Size">
+            <div class="stanza" data-visualization="">
               <p>Men paint with little, yet still survive,<br>
               Their art takes shape, their dreams alive.<br>
               A brush, a board, a coin a day,<br>
@@ -551,7 +544,7 @@
               A fight for space, to take a stand.</p>
             </div>
             
-            <div class="stanza" data-visualization="Elevation">
+            <div class="stanza" data-visualization="">
               <p>Her hands once bound, her choices slim,<br>
               No room to shape the art within.<br>
               But voices rise, our colors spread,<br>
@@ -630,7 +623,7 @@
           
           if (currentSpotlightIndex > 0) {
             const prevVisualizationTitle = visualizationTitles[currentSpotlightIndex - 1];
-            const stanzaElement = document.querySelector(`.stanza[data-visualization="${prevVisualizationTitle}"]`);
+            const stanzaElement = document.querySelector(`.stanza[data-visualization=""]`);
             
           }
         } else {
