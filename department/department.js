@@ -103,11 +103,10 @@ function renderPencilChart(data) {
         .range([height, 0]);
     
     const colors = {
-        male: "#5f4c73",
+        male: "#1e90ff",
         female: "#ed944d"
     };
     
-    // X-axis with white text
     svg.append("g")
         .attr("transform", `translate(0,${height})`)
         .attr("class", "axis")
@@ -119,7 +118,6 @@ function renderPencilChart(data) {
         .attr("dy", ".15em")
         .style("fill", "white");
     
-    // Y-axis with white text
     svg.append("g")
         .attr("class", "axis")
         .call(d3.axisLeft(y))
