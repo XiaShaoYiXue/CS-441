@@ -4,19 +4,15 @@ let data = null;
 document.addEventListener('DOMContentLoaded', function() {
     loadAndProcessCSVData('../MoMA_merged_final.csv');
     
-    // Add a global click handler to show the poem when clicking outside the bubbles
     document.addEventListener('click', function(event) {
-        // If we're not clicking on a bubble or pie chart, show the poem
         const clickedElement = event.target;
         const clickedOnVisualization = clickedElement.closest('#visualization') || 
                                       clickedElement.closest('#pie-chart');
         
         if (!clickedOnVisualization && selectedMedium) {
-            // Reset selectedMedium and hide pie chart, show poem
             selectedMedium = null;
             togglePoemAndPieChart(false);
             
-            // Reset bubble styling
             d3.selectAll(".medium-bubble")
                 .style("stroke-width", 1)
                 .style("stroke", "#aaa");
@@ -24,7 +20,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Function to toggle between poem and pie chart
 function togglePoemAndPieChart(showPieChart) {
     const poemDisplay = document.getElementById('poem-display');
     const pieChart = document.getElementById('pie-chart');
@@ -33,7 +28,7 @@ function togglePoemAndPieChart(showPieChart) {
         poemDisplay.style.display = 'none';
         pieChart.style.display = 'block';
     } else {
-        poemDisplay.style.display = 'flex'; // Using flex for alignment
+        poemDisplay.style.display = 'flex'; 
         pieChart.style.display = 'none';
     }
 }
@@ -41,7 +36,6 @@ function togglePoemAndPieChart(showPieChart) {
 function createPatterns(svg) {
     const defs = svg.append("defs");
     
-    // Gelatin silver print - silver color with grain texture
     const gelatinSilverPattern = defs.append("pattern")
         .attr("id", "gelatin-silver-pattern")
         .attr("patternUnits", "userSpaceOnUse")
@@ -208,16 +202,14 @@ function getPatternId(medium) {
 }
 
 function getGenderColor(gender) {
-    return gender === "male" ? "#7c67a9" : "#ff9e56"; // Brighter colors for better visibility
+    return gender === "male" ? "#1e90ff" : "#ed944d"; 
 }
 
 function handleMediumClick(medium) {
     if (selectedMedium === medium) {
-        // If clicking the same medium again, hide the pie chart and show poem
         selectedMedium = null;
         togglePoemAndPieChart(false);
     } else {
-        // If clicking a different medium, show its pie chart
         selectedMedium = medium;
         createPieChart(medium);
         togglePoemAndPieChart(true);
@@ -352,16 +344,15 @@ function createPieChart(medium) {
     d3.select("#pie-chart").selectAll("*").remove();
     
     const width = 400;
-    const height = 400; // Increased height to fit all elements
+    const height = 400; 
     const svg = d3.select("#pie-chart")
         .append("svg")
         .attr("width", width)
         .attr("height", height)
         .attr("viewBox", `0 0 ${width} ${height}`)
         .attr("style", "max-width: 100%; height: auto;")
-        .style("overflow", "visible"); // Prevent clipping
+        .style("overflow", "visible"); 
     
-    // Create artistic background for pie chart (transparent now)
     svg.append("rect")
         .attr("width", width)
         .attr("height", height)
@@ -378,10 +369,8 @@ function createPieChart(medium) {
         .style("fill", "#ffffff")
         .text(`Gender Distribution for ${medium}`);
     
-    // Create a textured effect for the pie slices
     const defs = svg.append("defs");
     
-    // Create a radial gradient for male pie slice 
     const maleGradient = defs.append("radialGradient")
         .attr("id", "male-gradient")
         .attr("cx", "50%")
@@ -390,11 +379,11 @@ function createPieChart(medium) {
         
     maleGradient.append("stop")
         .attr("offset", "0%")
-        .attr("stop-color", "#9a85cb");
+        .attr("stop-color", "#1e90ff");
         
     maleGradient.append("stop")
         .attr("offset", "100%")
-        .attr("stop-color", "#5f4c73");
+        .attr("stop-color", "#1e90ff");
     
     // Create a radial gradient for female pie slice
     const femaleGradient = defs.append("radialGradient")
@@ -405,7 +394,7 @@ function createPieChart(medium) {
         
     femaleGradient.append("stop")
         .attr("offset", "0%")
-        .attr("stop-color", "#ffb980");
+        .attr("stop-color", "#ed944d");
         
     femaleGradient.append("stop")
         .attr("offset", "100%")
